@@ -1,8 +1,8 @@
 opencv-python
-pytesseract
 pyautogui
 mss
 pygetwindow
 numpy
 gymnasium
 stable-baselines3[torch]
+easyocr
