@@ -4,9 +4,11 @@ import cv2
 import easyocr
 import keyboard
 import baseline_model.bm_environment as bm_env
+import settings
 
-# # Initialize EasyOCR Reader
-# reader = easyocr.Reader(['en'])  # Specify the language(s)
+# Initialize EasyOCR Reader
+reader = easyocr.Reader(['en'])  # Specify the language(s)
+
 
 def read_current_progression_state():
     # image should be the image from self.current_screen
@@ -14,7 +16,7 @@ def read_current_progression_state():
     image = np.array(image)
 
     # Define the ROI (x1, y1, x2, y2)
-    roi = (1595, 300, 1695, 342)
+    roi = settings.roi_main_menu
 
     # # scale ROI to current observation size
     # x_scale = self.obs_width / self.screen_width
@@ -24,8 +26,8 @@ def read_current_progression_state():
     # Crop the image to the ROI
     x1, y1, x2, y2 = roi
     cropped_image = image[y1:y2, x1:x2]
-    # Scale up the cropped image
-    cropped_image = cv2.resize(cropped_image, None, fx=1, fy=1, interpolation=cv2.INTER_CUBIC)
+    # # Scale up the cropped image
+    # cropped_image = cv2.resize(cropped_image, None, fx=1, fy=1, interpolation=cv2.INTER_CUBIC)
 
     # Perform OCR on the cropped image
     result = reader.readtext(cropped_image)

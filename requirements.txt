@@ -22,3 +22,4 @@ packaging
 pyparsing
 zipp
 gym
+keyboard
