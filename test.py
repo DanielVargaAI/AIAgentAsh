@@ -3,10 +3,10 @@ import numpy as np
 import cv2
 import easyocr
 import keyboard
+import baseline_model.bm_environment as bm_env
 
-# Initialize EasyOCR Reader
-reader = easyocr.Reader(['en'])  # Specify the language(s)
-
+# # Initialize EasyOCR Reader
+# reader = easyocr.Reader(['en'])  # Specify the language(s)
 
 def read_current_progression_state():
     # image should be the image from self.current_screen
@@ -33,9 +33,25 @@ def read_current_progression_state():
         print(f"Detected text: {res_text} with confidence: {res_conf}")
 
 
+def test_env_reset():
+    # TODO reset the environment to an initial state
+    # start new endless run
+    # keyboard presses: S, Space, S, S, S, Space, A, Space, Space, Space, Space, Space, Space, Enter, Space, W, Space
+    sequence = [2, 4, 2, 2, 2, 4, 1, 4, 4, 4, 4, 4, 4, 6, 4, 0, 4]
+    for action in sequence:
+        bm_env.apply_action(action)
+        # wait a bit between actions
+        pyautogui.sleep(0.5)
+    pyautogui.sleep(2.0)
+    bm_env.apply_action(4)  # Final Space to start
+    print("Environment reset sequence completed.")
+
+
 if __name__ == "__main__":
     while True:
         if keyboard.is_pressed("o"):
             break
         if keyboard.is_pressed('p'):
             read_current_progression_state()
+        if keyboard.is_pressed('r'):
+            test_env_reset()

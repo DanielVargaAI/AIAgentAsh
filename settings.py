@@ -7,5 +7,6 @@ action_keymap = {
     2: 'S',  # Down
     3: 'D',  # Right
     4: 'Space',  # Confirm / Action
-    5: 'Backspace'  # Back / Cancel
+    5: 'Backspace',  # Back / Cancel
+    6: 'Enter'  # Start
 }

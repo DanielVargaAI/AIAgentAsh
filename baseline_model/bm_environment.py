@@ -33,6 +33,19 @@ def get_obs():
 
     return cropped_image
 
+def env_reset():
+    # start new endless run
+    # keyboard presses: S, Space, S, S, S, Space, A, Space, Space, Space, Space, Space, Space, Enter, Space, W, Space
+    sequence = [2, 4, 2, 2, 2, 4, 1, 4, 4, 4, 4, 4, 4, 6, 4, 0, 4]
+    for action in sequence:
+        apply_action(action)
+        # wait a bit between actions
+        pyautogui.sleep(0.5)
+    # delay depending on loading times
+    pyautogui.sleep(2.0)
+    apply_action(4)  # Final Space to start
+    print("Environment reset sequence completed.")
+
 
 class PokeRogueEnv(gym.Env):
     def __init__(self):
@@ -41,20 +54,23 @@ class PokeRogueEnv(gym.Env):
         # Define action and observation space
         # They must be gym.spaces objects
         self.action_space = spaces.Discrete(6)  # Example: WASD + Space + Backspace
-        self.observation_space = spaces.Box(low=0, high=255, shape=(480, 640, 3), dtype=np.uint8)
+        self.observation_space = spaces.Box(low=0, high=255, shape=(480, 640, 3), dtype=np.uint8)  # TODO find out shape
         self.reader = easyocr.Reader(['en'])  # Initialize EasyOCR Reader
         self.last_stage = 0
         self.current_stage = 0
         self.reset()
 
     def reset(self, seed=None, options=None):
-        # TODO reset the environment to an initial state
+        env_reset()
         self.last_stage = 0
         self.current_stage = 0
-        pass
+        obs = get_obs()
+        self._get_stage(obs)
+        return obs
 
     def step(self, action):
         apply_action(action)
+        pyautogui.sleep(0.5)  # wait a bit for the game to respond
         obs = get_obs()
         self._get_stage(obs)
         terminated = self._check_terminated()
@@ -63,9 +79,9 @@ class PokeRogueEnv(gym.Env):
         return obs, reward, terminated, truncated, {}
 
     def _get_reward(self, action, terminated) -> float:
-        reward = 0.0
+        reward = -0.1
         if action == 4 or action == 5:
-            reward += -1.0
+            reward -= 1.0
         if self.current_stage != self.last_stage:
             reward += 100.0
             self.last_stage = self.current_stage
@@ -74,7 +90,7 @@ class PokeRogueEnv(gym.Env):
         return reward
 
     def _check_truncated(self) -> bool:
-        pass
+        return False
 
     def _check_terminated(self) -> bool:
         # TODO check obs for termination condition (question restart fight) with template matching
