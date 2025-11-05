@@ -2,6 +2,7 @@ import pyautogui
 import numpy as np
 import cv2
 import easyocr
+import keyboard
 
 # Initialize EasyOCR Reader
 reader = easyocr.Reader(['en'])  # Specify the language(s)
@@ -13,7 +14,7 @@ def read_current_progression_state():
     image = np.array(image)
 
     # Define the ROI (x1, y1, x2, y2)
-    roi = (175, 210, 750, 260)
+    roi = (1595, 300, 1695, 342)
 
     # # scale ROI to current observation size
     # x_scale = self.obs_width / self.screen_width
@@ -33,4 +34,8 @@ def read_current_progression_state():
 
 
 if __name__ == "__main__":
-    read_current_progression_state()
+    while True:
+        if keyboard.is_pressed("o"):
+            break
+        if keyboard.is_pressed('p'):
+            read_current_progression_state()
