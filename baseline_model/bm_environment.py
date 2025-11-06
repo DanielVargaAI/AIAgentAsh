@@ -138,8 +138,8 @@ class PokeRogueEnv(gym.Env):
             # print(f"Detected text: {res_text} with confidence: {res_conf}")
             try:
                 res_text = int(res_text)
+                if self.last_stage == 0:
+                    self.last_stage = res_text
+                self.current_stage = res_text
             except ValueError:
                 continue
-            if self.last_stage == 0:
-                self.last_stage = res_text
-            self.current_stage = res_text
