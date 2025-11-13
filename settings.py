@@ -17,3 +17,7 @@ action_keymap = {
     5: 'Backspace',  # Back / Cancel
     6: 'Enter'  # Start
 }
+
+biomes = ["Abyss", "Ancient Ruins", "Badlands", "Beach", "Cave", "Construction Site", "Desert", "Dojo", "Factory", "Fairy Cave", "Forest",
+          "Grassy Fields", "Graveyard", "Ice Cave", "Island", "Jungle", "Laboratory", "Lake", "Meadow", "Metropolis", "Mountain", "Plains",
+          "Power Plant", "Sea", "Seabed", "Slum", "Snowy Forest", "Space", "Swamp", "Tall Grass", "Temple", "Town", "Volcano", "Wasteland", "End"]
