@@ -1,5 +1,6 @@
 from Pokemon import Pokemon
 import settings
+import json
 
 
 def calc_moveset_value(pokemon: Pokemon, moveset):
@@ -27,23 +28,44 @@ def calc_best_moveset_combination(pokemon: Pokemon, moveset, new_move):
     return moveset_values.index(max(moveset_values))
 
 
-class Move:
-    def __init__(self, name: str):
-        self.name = name
-        self.dmg_type = None  # e.g. fire
-        self.move_type = None  # e.g. physical
-        self.accuracy = 0
-        self.pp = 0
-        self.damage = 0
-        # TODO description?, who get's hit, ...
+def get_vector(self):
+    """returns the embedded vector"""
+    vector = []
+    vector.append(self.dmg_type)  # add embedded vector of the dmg type
+    vector.append(self.move_type)  # add vector/id of move type
+    vector.append(self.accuracy / 100)  # scaled accuracy [0, 1]
+    vector.append(self.pp / 10)  # scaled pp [0.5, ~4]
+    vector.append(self.damage / 100)  # scaled dmg [0, ~1.5]
+    # TODO append additional info like who get's hit
+    return vector
 
-    def get_vector(self):
-        """returns the embedded vector"""
-        vector = []
-        vector.append(self.dmg_type)  # add embedded vector of the dmg type
-        vector.append(self.move_type)  # add vector/id of move type
-        vector.append(self.accuracy / 100)  # scaled accuracy [0, 1]
-        vector.append(self.pp / 10)  # scaled pp [0.5, ~4]
-        vector.append(self.damage / 100)  # scaled dmg [0, ~1.5]
-        # TODO append additional info like who get's hit
-        return vector
+
+def create_move_json():
+    moves_dict = dict()
+    with open("move_data.txt", "r") as tf:
+        for line in tf.readline():
+            splitted = line.split("|")
+            name = splitted[2].split("]")[0]
+            atk_type = splitted[3].split("_")[1].split(".")[0]
+            move_type = splitted[4].split("_")[1].split(".")[0]
+            dmg = splitted[5].strip()
+            dmg = int(dmg) if dmg != "-" else 0
+            acc = splitted[6].strip()
+            acc = int(acc) if acc != "-" else 0
+            pp = splitted[7].strip()
+            pp = int(pp) if pp != "-" else 0
+            moves_dict[name] = [atk_type, move_type, dmg, acc, pp]
+    with open("move_data.json", "w") as jf:
+        jf.write(json.dumps(moves_dict))
+
+
+if __name__ == "__main__":
+    string = "| **[[movedex:1|Absorb]]** | {{gameplay:types:en_Grass.png?nolink&40}} | {{:gameplay:types:move_Special.png?nolink&40}} | 20 | 100 | 25 |"
+    splitted = string.split("|")
+    print(splitted)
+    print(splitted[2].split("]")[0])
+    print(splitted[3].split("_")[1].split(".")[0])
+    print(splitted[4].split("_")[1].split(".")[0])
+    print(splitted[5].strip())
+    print(splitted[6].strip())
+    print(splitted[7].strip())
