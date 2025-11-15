@@ -1,3 +1,5 @@
+import hashlib
+from sklearn.decomposition import PCA
 from Pokemon import Pokemon
 import settings
 import json
@@ -28,44 +30,60 @@ def calc_best_moveset_combination(pokemon: Pokemon, moveset, new_move):
     return moveset_values.index(max(moveset_values))
 
 
-def get_vector(self):
+def get_vector(name: str, pp: float):
     """returns the embedded vector"""
-    vector = []
-    vector.append(self.dmg_type)  # add embedded vector of the dmg type
-    vector.append(self.move_type)  # add vector/id of move type
-    vector.append(self.accuracy / 100)  # scaled accuracy [0, 1]
-    vector.append(self.pp / 10)  # scaled pp [0.5, ~4]
-    vector.append(self.damage / 100)  # scaled dmg [0, ~1.5]
-    # TODO append additional info like who get's hit
+    # TODO: Bei fehlerhafter Namensextraktion das passendste finden
+    with open("move_data.json", "r") as f:
+        move_data = json.load(f)
+    vector = move_data[name]["embedding"]
+    vector.extend(move_data[name]["data"][1:8])
+    vector.append(pp)
     return vector
 
 
 def create_move_json():
     moves_dict = dict()
+    cheap_hash = lambda input: hashlib.md5(input.encode("utf-8")).hexdigest()[:6]
+    type_embeddings = json.loads(open("type_embeddings.json").read())
     with open("move_data.txt", "r") as tf:
-        for line in tf.readline():
+        for line in tf:
             splitted = line.split("|")
             name = splitted[2].split("]")[0]
+            name_hash = int(cheap_hash(name), 16) / 1_000_000  # numeric form of the hash
             atk_type = splitted[3].split("_")[1].split(".")[0]
+            atk_type_emb = type_embeddings[atk_type]
             move_type = splitted[4].split("_")[1].split(".")[0]
+            move_type_enc = -1 if move_type == "Status" else 0 if move_type == "Physical" else 1  # only 3 different values possible
             dmg = splitted[5].strip()
-            dmg = int(dmg) if dmg != "-" else 0
+            dmg = int(dmg) if dmg != "-" else -1  # Status and some other moves have "-" for no initial damage
+            dmg /= 100  # [0 or -1; 2.5]  => 0 Damage - maximum of 250 damage, Status moves with no damage have value -1
             acc = splitted[6].strip()
-            acc = int(acc) if acc != "-" else 0
+            acc = int(acc) if acc != "-" else 150  # there are some moves who have "-" for "definitely hitting"
+            acc /= 100  # [0; 1.5]  => 0% Accuracy - 100% or dummy value 150% for always hit
             pp = splitted[7].strip()
-            pp = int(pp) if pp != "-" else 0
-            moves_dict[name] = [atk_type, move_type, dmg, acc, pp]
+            pp = int(pp) if pp != "-" else 0  # there should be no move with less than 5 PP
+            pp /= 10  # [0.5; 8]
+            moves_dict[name] = {"data": [], "embedding": []}
+            moves_dict[name]["data"] = [name_hash]
+            moves_dict[name]["data"].extend(atk_type_emb)
+            moves_dict[name]["data"].extend([move_type_enc, dmg, acc, pp])
+
+    move_embeddings = create_move_embeddings(moves_dict)
+
+    for index, move_name in enumerate(moves_dict.keys()):
+        moves_dict[move_name]["embedding"] = move_embeddings[index].tolist()
+
     with open("move_data.json", "w") as jf:
         jf.write(json.dumps(moves_dict))
 
 
+def create_move_embeddings(moves_dict):
+    pca = PCA(n_components=5)
+    values = [x["data"] for x in moves_dict.values()]
+    embeddings = pca.fit_transform(values)
+    return embeddings
+
+
 if __name__ == "__main__":
-    string = "| **[[movedex:1|Absorb]]** | {{gameplay:types:en_Grass.png?nolink&40}} | {{:gameplay:types:move_Special.png?nolink&40}} | 20 | 100 | 25 |"
-    splitted = string.split("|")
-    print(splitted)
-    print(splitted[2].split("]")[0])
-    print(splitted[3].split("_")[1].split(".")[0])
-    print(splitted[4].split("_")[1].split(".")[0])
-    print(splitted[5].strip())
-    print(splitted[6].strip())
-    print(splitted[7].strip())
+    create_move_json()
+    print(get_vector("Absorb", 0.5))
