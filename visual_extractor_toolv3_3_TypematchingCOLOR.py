@@ -8,16 +8,9 @@ import os
 class PokerogueExtractor:
     """
     A class to extract game state information from a Pokerogue screenshot.
-    
-    V7.0: MAJOR UPGRADE. Uses a BGR "nearest color" map based on the
-    user-provided wiki type chart. This is far more accurate and
-    replaces the brittle HSV-range-guessing.
+
     """
     
-    # --- NEW: BGR Color Map from Wiki Chart ---
-    # I have manually sampled the BGR values from your 'image_5e2978.png'
-    # This is our new "ground truth" for all 18 types.
-    # Format: TypeName: (B, G, R)
     TYPE_BGR_MAP = {
         "Normal": (168, 168, 168),
         "Fire": (80, 48, 240),

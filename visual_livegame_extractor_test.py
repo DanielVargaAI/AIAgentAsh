@@ -6,7 +6,7 @@ import time
 # --- 1. Import Your Extractor Class ---
 # This assumes your class is in a file named "visual_extractor.py"
 try:
-    from visual_extractor_toolv3_1_DebugaddedClassbased import PokerogueExtractor
+    from visual_extractor_toolv3_3_TypematchingCOLOR import PokerogueExtractor
 except ImportError:
     print("Error: Could not find 'visual_extractor.py'.")
     print("Make sure your PokerogueExtractor class is in that file.")
@@ -15,7 +15,7 @@ except ImportError:
 # --- 2. Configuration ---
 
 # This is the resolution your labels were created for.
-# We found this in your 'result.json' file (e.g., "width": 2559, "height": 1439)
+# We found this in your 'result.json' file (e.g., "width": 2559, "height": 14
 BASE_RESOLUTION = (2559, 1439)  # (Width, Height)
 
 # Set this to the fight type you are testing
