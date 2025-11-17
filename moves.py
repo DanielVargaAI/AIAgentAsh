@@ -48,12 +48,12 @@ def create_move_json():
     with open("move_data.txt", "r") as tf:
         for line in tf:
             splitted = line.split("|")
-            name = splitted[2].split("]")[0]
+            name = splitted[2].split("]")[0].lower()
             name_hash = int(cheap_hash(name), 16) / 1_000_000  # numeric form of the hash
-            atk_type = splitted[3].split("_")[1].split(".")[0]
+            atk_type = splitted[3].split("_")[1].split(".")[0].lower()
             atk_type_emb = type_embeddings[atk_type]
-            move_type = splitted[4].split("_")[1].split(".")[0]
-            move_type_enc = -1 if move_type == "Status" else 0 if move_type == "Physical" else 1  # only 3 different values possible
+            move_type = splitted[4].split("_")[1].split(".")[0].lower()
+            move_type_enc = -1 if move_type == "status" else 0 if move_type == "physical" else 1  # only 3 different values possible
             dmg = splitted[5].strip()
             dmg = int(dmg) if dmg != "-" else -1  # Status and some other moves have "-" for no initial damage
             dmg /= 100  # [0 or -1; 2.5]  => 0 Damage - maximum of 250 damage, Status moves with no damage have value -1
@@ -86,4 +86,4 @@ def create_move_embeddings(moves_dict):
 
 if __name__ == "__main__":
     create_move_json()
-    print(get_vector("Absorb", 0.5))
+    print(get_vector("absorb", 0.5))

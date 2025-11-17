@@ -4,6 +4,8 @@ import ast
 import settings
 import requests
 from sklearn.decomposition import PCA
+import hashlib
+import fuzzy_string_matching
 
 
 class Pokemon:
@@ -71,11 +73,18 @@ def create_pokedex_database():
                 print(pokemon["img"])
                 name = pokemon["img"]
             else:
-                name = response.json()["species"]["name"]
+                name = str(response.json()["species"]["name"]).lower()
             # if the img has "-" add everything behind it in front of the name
             if pokemon["img"].find("-") > 0:
-                name = pokemon["img"][pokemon["img"].find("-"):] + "-" + name
-            pokedex_data[name] = {"data": [], "embedding": []}
+                name = pokemon["img"][pokemon["img"].find("-")+1:] + "-" + name
+            formtypes = str(type_names[pokemon["t1"]] + type_names[pokemon["t2"]]) if "t2" in pokemon.keys() \
+                else str(type_names[pokemon["t1"]] + "none")
+            if name not in pokedex_data.keys():
+                pokedex_data[name] = dict()
+            elif formtypes in pokedex_data[name].keys():
+                continue
+            pokedex_data[name][formtypes] = dict()
+            pokedex_data[name][formtypes] = {"data": [], "embedding": []}
             type1_emb = type_embeddings_json[type_names[pokemon["t1"]]] if "t1" in pokemon.keys() else [0, 0, 0, 0]
             type2_emb = type_embeddings_json[type_names[pokemon["t2"]]] if "t2" in pokemon.keys() else [0, 0, 0, 0]
             ability1 = pokemon["a1"] / 500 if "a1" in pokemon.keys() else -1
@@ -91,33 +100,45 @@ def create_pokedex_database():
             spe = pokemon["spe"] / 255
             generation = pokemon["ge"] / 9  # Generations 1-9
             family = pokemon["fa"] / 1000 if "fa" in pokemon.keys() else -1
-            pokedex_data[name]["data"].extend(type1_emb)
-            pokedex_data[name]["data"].extend(type2_emb)
-            pokedex_data[name]["data"].extend([ability1, ability2, hidden_ability, passive, sum_points, hp, atk, defence, spa, spd, spe, generation, family])
+            pokedex_data[name][formtypes]["data"].extend(type1_emb)
+            pokedex_data[name][formtypes]["data"].extend(type2_emb)
+            pokedex_data[name][formtypes]["data"].extend([ability1, ability2, hidden_ability, passive, sum_points, hp, atk, defence, spa, spd, spe, generation, family])
 
     pokemon_embeddings = create_pokemon_embeddings(pokedex_data)
 
+    ind_value = 0
     for index, pokemon_name in enumerate(pokedex_data.keys()):
-        pokedex_data[pokemon_name]["embedding"] = pokemon_embeddings[index].tolist()
+        for form in pokedex_data[pokemon_name].keys():
+            pokedex_data[pokemon_name][form]["embedding"] = pokemon_embeddings[ind_value].tolist()
+            ind_value += 1
 
     with open("pokedex_database.json", "w") as dbf:
         dbf.write(json.dumps(pokedex_data))
 
 
-def get_pokemon_vector(name: str, status: str, hp: float, level: int = 0, ):
+def get_pokemon_vector(name: str, types: list[str, str], status: str, hp: float, level: int = 0, ):
     """returns the embedded vector"""
-    # TODO: Bei fehlerhafter Namensextraktion das passendste finden
     with open("pokedex_database.json", "r") as f:
-        move_data = json.load(f)
-    vector = move_data[name]["embedding"]
-    vector.extend(move_data[name]["data"][0:8])
+        pokemon_data = json.load(f)
+    with open("type_embeddings.json", "r") as tf:
+        type_embeddings_json = json.loads(tf.read())
+    types_vector = type_embeddings_json[types[0].lower()]
+    types_vector.extend(type_embeddings_json[types[1].lower()]) if types[1] != "none" else [0, 0, 0, 0]
+    vector = [0, 0, 0, 0, 0, 0, 0, 0]  # default vector if no match is found
+    corrected_name = fuzzy_string_matching.get_best_match(name, pokemon_data)[0]
+    if str(types[0] + types[1]).lower() in pokemon_data[corrected_name].keys():
+        vector = pokemon_data[corrected_name][str(types[0] + types[1]).lower()]["embedding"]
+    vector.extend(types_vector)
     vector.extend([status, hp, level])
     return vector
 
 
 def create_pokemon_embeddings(pokedex_data):
     pca = PCA(n_components=8)
-    values = [x["data"] for x in pokedex_data.values()]
+    values = list()
+    for x in pokedex_data.values():
+        for form in x.values():
+            values.append(form["data"])
     embeddings = pca.fit_transform(values)
     return embeddings
 
@@ -125,6 +146,5 @@ def create_pokemon_embeddings(pokedex_data):
 if __name__ == "__main__":
     # save_js_to_json()
     # delete_numerical_keys()
-    # create_pokedex_database()
-    print(get_pokemon_vector("bulbasaur", "", 0.6, 5))
-    # TODO check similarities
+    # create_pokedex_database()  # if you do this, you will have to delete duplicates again
+    print(get_pokemon_vector("bulbasaur", ["grass", "poison"], "", 0.6, 5))
