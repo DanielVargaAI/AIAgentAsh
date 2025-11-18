@@ -25,3 +25,12 @@ type_matrix = {
     "steel":    [1, 1, 0.5, 0.5, 0.5, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 0.5, 2],
     "fairy":    [1, 1, 0.5, 1, 1, 1, 2, 0.5, 1, 1, 1, 1, 1, 1, 2, 2, 0.5, 1],
 }
+
+status_matrix = {
+    "none": float(),
+    "paralyzed": float(),
+    "poisoned": float(),
+    "burned": float(),
+    "frozen": float(),
+    "asleep": float(),
+}

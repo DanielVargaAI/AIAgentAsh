@@ -116,18 +116,20 @@ def create_pokedex_database():
         dbf.write(json.dumps(pokedex_data))
 
 
-def get_pokemon_vector(name: str, types: list[str, str], status: str, hp: float, level: int = 0, ):
+def get_pokemon_vector(name: str, types: list[str, str], status: str, hp: float, level: int = 0,
+                       pokemon_database=None, type_database=None):
     """returns the embedded vector"""
-    with open("pokedex_database.json", "r") as f:
-        pokemon_data = json.load(f)
-    with open("type_embeddings.json", "r") as tf:
-        type_embeddings_json = json.loads(tf.read())
-    types_vector = type_embeddings_json[types[0].lower()]
-    types_vector.extend(type_embeddings_json[types[1].lower()]) if types[1] != "none" else [0, 0, 0, 0]
+    types_vector = type_database[types[0].lower()]
+    types_vector.extend(type_database[types[1].lower()]) if types[1] != "none" else [0, 0, 0, 0]
     vector = [0, 0, 0, 0, 0, 0, 0, 0]  # default vector if no match is found
-    corrected_name = fuzzy_string_matching.get_best_match(name, pokemon_data)[0]
-    if str(types[0] + types[1]).lower() in pokemon_data[corrected_name].keys():
-        vector = pokemon_data[corrected_name][str(types[0] + types[1]).lower()]["embedding"]
+    corrected_name = fuzzy_string_matching.get_best_match(name, pokemon_database)[0]
+    print(corrected_name)
+    if not corrected_name:
+        vector.extend(types_vector)
+        vector.extend([status, hp, level])
+        return vector
+    if str(types[0] + types[1]).lower() in pokemon_database[corrected_name].keys():
+        vector = pokemon_database[corrected_name][str(types[0] + types[1]).lower()]["embedding"]
     vector.extend(types_vector)
     vector.extend([status, hp, level])
     return vector
@@ -147,4 +149,9 @@ if __name__ == "__main__":
     # save_js_to_json()
     # delete_numerical_keys()
     # create_pokedex_database()  # if you do this, you will have to delete duplicates again
-    print(get_pokemon_vector("bulbasaur", ["grass", "poison"], "", 0.6, 5))
+    with open("pokedex_database.json", "r") as f:
+        pokemon_data = json.loads(f.read())
+    with open("type_embeddings.json", "r") as tf:
+        type_embeddings_json = json.loads(tf.read())
+    print(get_pokemon_vector("mega-luca.", ["fighting", "steel"], "", 0.6, 5,
+                             pokemon_data, type_embeddings_json))

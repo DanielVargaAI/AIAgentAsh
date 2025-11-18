@@ -3,6 +3,7 @@ from sklearn.decomposition import PCA
 from Pokemon import Pokemon
 import settings
 import json
+import fuzzy_string_matching
 
 
 def calc_moveset_value(pokemon: Pokemon, moveset):
@@ -30,13 +31,13 @@ def calc_best_moveset_combination(pokemon: Pokemon, moveset, new_move):
     return moveset_values.index(max(moveset_values))
 
 
-def get_vector(name: str, pp: float):
+def get_move_vector(name: str, pp: float, move_database):
     """returns the embedded vector"""
-    # TODO: Bei fehlerhafter Namensextraktion das passendste finden
-    with open("move_data.json", "r") as f:
-        move_data = json.load(f)
-    vector = move_data[name]["embedding"]
-    vector.extend(move_data[name]["data"][1:8])
+    corrected_name = fuzzy_string_matching.get_best_match(name, move_database)[0]
+    if not corrected_name:
+        return [0] * 12  # default vector if no match is found
+    vector = move_database[corrected_name]["embedding"]
+    vector.extend(move_database[corrected_name]["data"][1:8])
     vector.append(pp)
     return vector
 
@@ -86,4 +87,6 @@ def create_move_embeddings(moves_dict):
 
 if __name__ == "__main__":
     create_move_json()
-    print(get_vector("absorb", 0.5))
+    with open("move_data.json", "r") as f:
+        move_database = json.load(f)
+    print(get_move_vector("absorb", 0.5, move_database))
