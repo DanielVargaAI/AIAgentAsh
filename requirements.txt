@@ -1,9 +1,9 @@
-opencv-python~=4.11.0.86
-pytesseract
-pyautogui~=0.9.54
-mss
-pygetwindow
-numpy~=2.2.6
+opencv-python
+pyautogui
+numpy
 gymnasium
 stable-baselines3[torch]
 easyocr
+scikit-learn
+requests
+rapidfuzz
