@@ -1,7 +1,6 @@
 import Pokemon
 import moves
 import numpy as np
-import settings
 import json
 
 
@@ -43,7 +42,6 @@ data = {
     "ally2_attack4_name": str(),
     "ally2_attack4_pp": float(),
 }
-# TODO is active flag is missing
 
 
 def create_input_vector(data, move_database, pokemon_database, type_database):

@@ -1,12 +1,11 @@
 import hashlib
 from sklearn.decomposition import PCA
-from Pokemon import Pokemon
 import settings
 import json
 import fuzzy_string_matching
 
 
-def calc_moveset_value(pokemon: Pokemon, moveset):
+def calc_moveset_value(pokemon, moveset):
     moveset_value = 0
     types = set()
     for move in moveset:
@@ -20,7 +19,7 @@ def calc_moveset_value(pokemon: Pokemon, moveset):
     return moveset_value
 
 
-def calc_best_moveset_combination(pokemon: Pokemon, moveset, new_move):
+def calc_best_moveset_combination(pokemon, moveset, new_move):
     """returns the best moveset, given the current moveset, the new move that can be learned and the Pokemon"""
     moveset_values = [0, 0, 0, 0, 0]
     for x in range(4):
