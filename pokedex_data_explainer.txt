@@ -1,0 +1,23 @@
+Namen über Pokedex-ID herausfinden: z.B. https://pokeapi.co/api/v2/pokemon/5
+dex: Pokedex-ID
+img: Image (ignore)
+t1: Type 1 (e.g. Fire ->ID of Type)
+t2: Type 2 (can be empty/non existing)
+a1: Ability
+ha: Hidden Ability
+pa: Passive (Ability)
+bst: Total Stats
+hp: Health Points
+atk: Attack
+def: Defense
+spa: Special Attack
+spd: Special Defense
+spe: Speed
+e1 - e4: Egg Moves
+co: Costs (ignore)
+et: ?
+sh: could be something shiny specific?
+ge: Generation?
+st: is Starter? 1 = yes, 0/not existent = no/most likely an Evolution
+fa: Family?
+fs and following: ?

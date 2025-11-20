@@ -7,3 +7,5 @@ easyocr
 scikit-learn
 requests
 rapidfuzz
+gym
+keyboard

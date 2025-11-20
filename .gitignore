@@ -207,6 +207,5 @@ marimo/_lsp/
 __marimo__/
 
 venv
-test.py
 Screenshots
-baseline_model
+baseline_model/tensorboard_logs
