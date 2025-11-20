@@ -1,5 +1,5 @@
 screen = (1920, 1080)
-roi_stage = (1595, 300, 1695, 342)  # TODO is not fixed, depends on enemy items
+roi_stage = (1100, -55, 1820, 0)
 roi_game = (96, 52, 1823, 1023)
 roi_main_menu = (1460, 563, 1778, 978)
 image_scaler = (1/3, 1/3)

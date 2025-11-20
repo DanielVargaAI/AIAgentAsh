@@ -9,12 +9,7 @@ import cv2
 import pyautogui
 import easyocr
 import settings
-
-
-def apply_roi_offset(roi):
-    x_offset = settings.roi_game[0]
-    y_offset = settings.roi_game[1]
-    return roi[0] + x_offset, roi[1] + y_offset, roi[2] + x_offset, roi[3] + y_offset
+import template_matching
 
 
 def apply_action(action):
@@ -63,6 +58,7 @@ class PokeRogueEnv(gym.Env):
         self.action_space = spaces.Discrete(6)  # Example: WASD + Space + Backspace
         self.observation_space = spaces.Box(low=0, high=255, shape=(settings.scaled_screen_height, settings.scaled_screen_width, 3), dtype=np.uint8)
         self.reader = easyocr.Reader(['en'])  # Initialize EasyOCR Reader
+        self.template_poke_dollar = cv2.imread("..\\poke_dollar_template.png")
         self.last_stage = 0
         self.current_stage = 0
         self.terminated = False
@@ -72,10 +68,11 @@ class PokeRogueEnv(gym.Env):
     def reset(self, seed=None, options=None):
         # reset only on terminated, don't reset on truncated
         env_reset(terminated=self.terminated, truncated=self.truncated)
-        self.last_stage = 0
-        self.current_stage = 0
+        self.last_stage = 1
+        self.current_stage = 1
         obs = get_obs()
-        self._get_stage(obs)
+        self.update_stage_data(obs)
+        self.last_stage = self.current_stage
         obs_scaled = cv2.resize(obs, None, fx=settings.image_scaler[0], fy=settings.image_scaler[1], interpolation=cv2.INTER_CUBIC)
         self.terminated = False
         self.truncated = False
@@ -83,9 +80,9 @@ class PokeRogueEnv(gym.Env):
 
     def step(self, action):
         apply_action(action)
-        pyautogui.sleep(0.5)  # wait a bit for the game to respond
+        pyautogui.sleep(0.3)  # wait a bit for the game to respond
         obs = get_obs()
-        self._get_stage(obs)
+        self.update_stage_data(obs)
         self.terminated = self._check_terminated(obs)
         self.truncated = self._check_truncated()
         reward = self._get_reward(action)
@@ -93,20 +90,22 @@ class PokeRogueEnv(gym.Env):
         return obs_scaled, reward, self.terminated, self.truncated, self._get_info()
 
     def _get_info(self):
-        return {}
+        return {"final_stage": self.current_stage if self.terminated else -1}
 
     def _get_reward(self, action) -> float:
         reward = -0.1
         if action == 4 or action == 5:
             reward -= 1.0
-        if self.current_stage != self.last_stage:
-            reward += 100.0
-            self.last_stage = self.current_stage
+        reward += (self.current_stage - self.last_stage) * 100.0  # incase we missed a stage increase in between
+        self.last_stage = self.current_stage
         if self.terminated:
             reward -= 50.0
         return reward
 
     def _check_truncated(self) -> bool:
+        if self.current_stage % 10 == 0 and self.current_stage != self.last_stage:
+            print("DEBUG: In Future Truncating now at stage ", self.current_stage)
+            # return True  # TODO find a way to get back to main menu from every state
         return False
 
     def _check_terminated(self, obs) -> bool:
@@ -119,27 +118,29 @@ class PokeRogueEnv(gym.Env):
 
         for (res_bbox, res_text, res_conf) in result:
             # print(f"Detected text: {res_text} with confidence: {res_conf}")
-            if res_text.lower() in ["Continue", "New Game", "Load Game", "Run History", "Settings"]:
+            if res_text.lower() in ["continue", "new game", "load game", "run history", "settings"]:
                 print("DEBUG: Detected main menu by text: ", res_text)
                 return True
         return False
 
-    def _get_stage(self, obs):
-        # Crop the obs-image to the ROI
-        x1, y1, x2, y2 = settings.roi_stage
+    def update_stage_data(self, obs):
+        pos = template_matching.get_pokedollar_pos(obs, self.template_poke_dollar)
+        if pos is None:
+            return
+        x1, y1, x2, y2 = [1100, pos[0] - 55, 1820, pos[0]]
         cropped_image = obs[y1:y2, x1:x2]
-        # # Scale up the cropped image
-        # cropped_image = cv2.resize(cropped_image, None, fx=1, fy=1, interpolation=cv2.INTER_CUBIC)
-
-        # Perform OCR on the cropped image
         result = self.reader.readtext(cropped_image)
 
         for (res_bbox, res_text, res_conf) in result:
             # print(f"Detected text: {res_text} with confidence: {res_conf}")
-            try:
-                res_text = int(res_text)
-                if self.last_stage == 0:
-                    self.last_stage = res_text
-                self.current_stage = res_text
-            except ValueError:
-                continue
+            pass
+
+        if result:
+            stage = result[-1][1].split("-")[-1]
+            new_stage = int(stage) if stage.isdigit() else -1
+            if new_stage > self.last_stage:
+                self.current_stage = new_stage
+                print("DEBUG: Updated stage to ", self.current_stage)
+            else:
+                self.current_stage = self.last_stage
+        return
