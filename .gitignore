@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+training_data_v2
+InGame
+
+
 # Distribution / packaging
 .Python
 build/
