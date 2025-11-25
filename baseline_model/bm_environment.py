@@ -31,9 +31,7 @@ def get_obs(with_offset=False):
         return image
 
 
-def env_reset(existing_save=False, terminated=False, truncated=False):
-    if truncated and not terminated:
-        return
+def env_reset(existing_save=False):
     # start new endless run
     # keyboard presses: S, Space, S, S, S, Space, A, Space, Space, Space, Space, Space, Space, Enter, Space, W, Space
     sequence = [2, 4, 2, 2, 2, 4, 1, 4, 4, 4, 4, 4, 4, 6, 4, 0, 4]
@@ -41,8 +39,7 @@ def env_reset(existing_save=False, terminated=False, truncated=False):
         apply_action(action)
         # wait a bit between actions
         pyautogui.sleep(0.5)
-    # TODO when a run failed, the run will start until here, otherwise we need to accept to override the save
-    if existing_save:
+    if existing_save:  # at the moment we always start a new game, so this is unused (or we load an existing save)
         # delay depending on loading times
         pyautogui.sleep(2.0)
         apply_action(4)  # Final Space to start
@@ -52,33 +49,34 @@ def env_reset(existing_save=False, terminated=False, truncated=False):
 class PokeRogueEnv(gym.Env):
     def __init__(self):
         super(PokeRogueEnv, self).__init__()
-
-        # Define action and observation space
-        # They must be gym.spaces objects
         self.action_space = spaces.Discrete(6)  # Example: WASD + Space + Backspace
         self.observation_space = spaces.Box(low=0, high=255, shape=(settings.scaled_screen_height, settings.scaled_screen_width, 3), dtype=np.uint8)
         self.reader = easyocr.Reader(['en'])  # Initialize EasyOCR Reader
         self.template_poke_dollar = cv2.imread("..\\poke_dollar_template.png")
-        self.last_stage = 0
-        self.current_stage = 0
-        self.terminated = False
-        self.truncated = True  # TODO if we already have a save on the last slot: start the save and set this to True
-        self.reset()
-
-    def reset(self, seed=None, options=None):
-        # reset only on terminated, don't reset on truncated
-        env_reset(terminated=self.terminated, truncated=self.truncated)
         self.last_stage = 1
         self.current_stage = 1
+        self.terminated = False
+        self.truncated = False
+        self.reset()
+        self.move_counter = 0
+
+    def reset(self, seed=None, options=None):
+        if self._check_terminated(get_obs()):
+            env_reset()
+        if self.terminated:  # if we truncated, the state should not be different from before
+            self.last_stage = 1
+            self.current_stage = 1
         obs = get_obs()
         self.update_stage_data(obs)
         self.last_stage = self.current_stage
         obs_scaled = cv2.resize(obs, None, fx=settings.image_scaler[0], fy=settings.image_scaler[1], interpolation=cv2.INTER_CUBIC)
         self.terminated = False
         self.truncated = False
+        self.move_counter = 0
         return obs_scaled, self._get_info()
 
     def step(self, action):
+        self.move_counter += 1
         apply_action(action)
         pyautogui.sleep(0.3)  # wait a bit for the game to respond
         obs = get_obs()
@@ -103,9 +101,9 @@ class PokeRogueEnv(gym.Env):
         return reward
 
     def _check_truncated(self) -> bool:
-        if self.current_stage % 10 == 0 and self.current_stage != self.last_stage:
-            print("DEBUG: In Future Truncating now at stage ", self.current_stage)
-            # return True  # TODO find a way to get back to main menu from every state
+        if self.move_counter >= 100:
+            print("DEBUG: Move limit reached, truncating now at stage ", self.current_stage)
+            return True
         return False
 
     def _check_terminated(self, obs) -> bool:
