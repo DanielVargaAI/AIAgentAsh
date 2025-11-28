@@ -1,0 +1,3019 @@
+{
+  "seed": "TU32pZmmaA2JNNBBNCXBoLdz",
+  "playTime": 30011,
+  "gameMode": 1,
+  "party": [
+    {
+      "abilityIndex": 0,
+      "battleData": {
+        "berriesEaten": null,
+        "hasEatenBerry": false,
+        "hitCount": 0
+      },
+      "boss": false,
+      "bossSegments": 0,
+      "customPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "exp": 7439738286,
+      "formIndex": 1,
+      "friendship": 255,
+      "fusionCustomPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "fusionLuck": 1,
+      "fusionMysteryEncounterPokemonData": null,
+      "fusionSpecies": null,
+      "fusionTeraType": 0,
+      "fusionVariant": 0,
+      "gender": 0,
+      "hp": 10223,
+      "id": 1894525663,
+      "isTerastallized": false,
+      "ivs": [
+        27,
+        28,
+        24,
+        31,
+        29,
+        31
+      ],
+      "level": 1902,
+      "levelExp": 0,
+      "luck": 1,
+      "metBiome": -1,
+      "metLevel": 5,
+      "metSpecies": 443,
+      "metWave": -1,
+      "moveset": [
+        {
+          "moveId": 407,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 616,
+          "ppUp": 3,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 309,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 891,
+          "ppUp": 3,
+          "ppUsed": 0
+        }
+      ],
+      "mysteryEncounterPokemonData": null,
+      "nature": 13,
+      "passive": false,
+      "pauseEvolutions": false,
+      "player": true,
+      "pokeball": 0,
+      "pokerus": true,
+      "shiny": true,
+      "species": 445,
+      "stats": [
+        10223,
+        14764,
+        8335,
+        2579,
+        6338,
+        11904
+      ],
+      "status": null,
+      "stellarTypesBoosted": null,
+      "summonData": {
+        "abilitySuppressed": false,
+        "berriesEatenLast": null,
+        "illusionBroken": false,
+        "moveHistory": null,
+        "moveQueue": null,
+        "statStages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "tags": null,
+        "types": null
+      },
+      "teraType": 15,
+      "usedTMs": null,
+      "variant": 0
+    },
+    {
+      "abilityIndex": 0,
+      "battleData": {
+        "berriesEaten": null,
+        "hasEatenBerry": false,
+        "hitCount": 0
+      },
+      "boss": false,
+      "bossSegments": 0,
+      "customPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "exp": 5058490574,
+      "formIndex": 0,
+      "friendship": 255,
+      "fusionCustomPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "fusionLuck": 1,
+      "fusionMysteryEncounterPokemonData": null,
+      "fusionSpecies": null,
+      "fusionTeraType": 0,
+      "fusionVariant": 0,
+      "gender": -1,
+      "hp": 5477,
+      "id": 1367109607,
+      "isTerastallized": false,
+      "ivs": [
+        27,
+        29,
+        27,
+        25,
+        24,
+        23
+      ],
+      "level": 1672,
+      "levelExp": 4494040,
+      "luck": 1,
+      "metBiome": -1,
+      "metLevel": 5,
+      "metSpecies": 245,
+      "metWave": -1,
+      "moveset": [
+        {
+          "moveId": 326,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 56,
+          "ppUp": 1,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 573,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 57,
+          "ppUp": 0,
+          "ppUsed": 0
+        }
+      ],
+      "mysteryEncounterPokemonData": null,
+      "nature": 20,
+      "passive": false,
+      "pauseEvolutions": false,
+      "player": true,
+      "pokeball": 0,
+      "pokerus": true,
+      "shiny": true,
+      "species": 245,
+      "stats": [
+        5477,
+        2697,
+        4302,
+        4034,
+        4677,
+        3231
+      ],
+      "status": null,
+      "stellarTypesBoosted": null,
+      "summonData": {
+        "abilitySuppressed": false,
+        "berriesEatenLast": null,
+        "illusionBroken": false,
+        "moveHistory": null,
+        "moveQueue": null,
+        "statStages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "tags": null,
+        "types": null
+      },
+      "teraType": 10,
+      "usedTMs": [
+        56
+      ],
+      "variant": 0
+    },
+    {
+      "abilityIndex": 0,
+      "battleData": {
+        "berriesEaten": null,
+        "hasEatenBerry": false,
+        "hitCount": 0
+      },
+      "boss": false,
+      "bossSegments": 0,
+      "customPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "exp": 5412854083,
+      "formIndex": 1,
+      "friendship": 250,
+      "fusionCustomPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "fusionLuck": 1,
+      "fusionMysteryEncounterPokemonData": null,
+      "fusionSpecies": null,
+      "fusionTeraType": 0,
+      "fusionVariant": 0,
+      "gender": 0,
+      "hp": 4671,
+      "id": 4134396326,
+      "isTerastallized": false,
+      "ivs": [
+        31,
+        29,
+        24,
+        30,
+        20,
+        27
+      ],
+      "level": 1720,
+      "levelExp": 8023309,
+      "luck": 1,
+      "metBiome": -1,
+      "metLevel": 5,
+      "metSpecies": 447,
+      "metWave": -1,
+      "moveset": [
+        {
+          "moveId": 396,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 911,
+          "ppUp": 1,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 94,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 411,
+          "ppUp": 3,
+          "ppUsed": 0
+        }
+      ],
+      "mysteryEncounterPokemonData": null,
+      "nature": 18,
+      "passive": false,
+      "pauseEvolutions": false,
+      "player": true,
+      "pokeball": 0,
+      "pokerus": true,
+      "shiny": true,
+      "species": 448,
+      "stats": [
+        4671,
+        5491,
+        3445,
+        9189,
+        2757,
+        4322
+      ],
+      "status": null,
+      "stellarTypesBoosted": null,
+      "summonData": {
+        "abilitySuppressed": false,
+        "berriesEatenLast": null,
+        "illusionBroken": false,
+        "moveHistory": null,
+        "moveQueue": null,
+        "statStages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "tags": null,
+        "types": null
+      },
+      "teraType": 1,
+      "usedTMs": [
+        411,
+        94
+      ],
+      "variant": 0
+    },
+    {
+      "abilityIndex": 0,
+      "battleData": {
+        "berriesEaten": null,
+        "hasEatenBerry": false,
+        "hitCount": 0
+      },
+      "boss": false,
+      "bossSegments": 0,
+      "customPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "exp": 5720447880,
+      "formIndex": 0,
+      "friendship": 202,
+      "fusionCustomPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "fusionLuck": 1,
+      "fusionMysteryEncounterPokemonData": null,
+      "fusionSpecies": null,
+      "fusionTeraType": 0,
+      "fusionVariant": 0,
+      "gender": 0,
+      "hp": 4909,
+      "id": 3410825498,
+      "isTerastallized": false,
+      "ivs": [
+        28,
+        30,
+        27,
+        31,
+        24,
+        30
+      ],
+      "level": 1828,
+      "levelExp": 9079339,
+      "luck": 1,
+      "metBiome": -1,
+      "metLevel": 5,
+      "metSpecies": 827,
+      "metWave": -1,
+      "moveset": [
+        {
+          "moveId": 740,
+          "ppUp": 1,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 168,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 492,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 595,
+          "ppUp": 0,
+          "ppUsed": 0
+        }
+      ],
+      "mysteryEncounterPokemonData": null,
+      "nature": 0,
+      "passive": false,
+      "pauseEvolutions": false,
+      "player": true,
+      "pokeball": 0,
+      "pokerus": true,
+      "shiny": true,
+      "species": 828,
+      "stats": [
+        4909,
+        2673,
+        2619,
+        3752,
+        3807,
+        3843
+      ],
+      "status": null,
+      "stellarTypesBoosted": null,
+      "summonData": {
+        "abilitySuppressed": false,
+        "berriesEatenLast": null,
+        "illusionBroken": false,
+        "moveHistory": null,
+        "moveQueue": null,
+        "statStages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "tags": null,
+        "types": null
+      },
+      "teraType": 16,
+      "usedTMs": null,
+      "variant": 0
+    },
+    {
+      "abilityIndex": 1,
+      "battleData": {
+        "berriesEaten": null,
+        "hasEatenBerry": false,
+        "hitCount": 0
+      },
+      "boss": false,
+      "bossSegments": 0,
+      "customPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "exp": 4282321277,
+      "formIndex": 2,
+      "friendship": 236,
+      "fusionCustomPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "fusionLuck": 1,
+      "fusionMysteryEncounterPokemonData": null,
+      "fusionSpecies": null,
+      "fusionTeraType": 0,
+      "fusionVariant": 0,
+      "gender": 0,
+      "hp": 5689,
+      "id": 1744766657,
+      "isTerastallized": false,
+      "ivs": [
+        29,
+        24,
+        28,
+        28,
+        30,
+        30
+      ],
+      "level": 1591,
+      "levelExp": 5569115,
+      "luck": 1,
+      "metBiome": -1,
+      "metLevel": 5,
+      "metSpecies": 848,
+      "metWave": -1,
+      "moveset": [
+        {
+          "moveId": 586,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 474,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 405,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 87,
+          "ppUp": 0,
+          "ppUsed": 0
+        }
+      ],
+      "mysteryEncounterPokemonData": null,
+      "nature": 14,
+      "passive": false,
+      "pauseEvolutions": false,
+      "player": true,
+      "pokeball": 0,
+      "pokerus": true,
+      "shiny": true,
+      "species": 849,
+      "stats": [
+        5689,
+        3727,
+        3059,
+        4809,
+        2781,
+        3401
+      ],
+      "status": null,
+      "stellarTypesBoosted": null,
+      "summonData": {
+        "abilitySuppressed": false,
+        "berriesEatenLast": null,
+        "illusionBroken": false,
+        "moveHistory": null,
+        "moveQueue": null,
+        "statStages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "tags": null,
+        "types": null
+      },
+      "teraType": 3,
+      "usedTMs": [
+        87,
+        474
+      ],
+      "variant": 0
+    },
+    {
+      "abilityIndex": 0,
+      "battleData": {
+        "berriesEaten": null,
+        "hasEatenBerry": false,
+        "hitCount": 0
+      },
+      "boss": false,
+      "bossSegments": 0,
+      "customPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "exp": 4703794064,
+      "formIndex": 0,
+      "friendship": 176,
+      "fusionCustomPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "fusionLuck": 0,
+      "fusionMysteryEncounterPokemonData": null,
+      "fusionSpecies": null,
+      "fusionTeraType": 0,
+      "fusionVariant": 0,
+      "gender": 0,
+      "hp": 4817,
+      "id": 2426434308,
+      "isTerastallized": false,
+      "ivs": [
+        31,
+        31,
+        31,
+        31,
+        30,
+        30
+      ],
+      "level": 1675,
+      "levelExp": 4372189,
+      "luck": 0,
+      "metBiome": -1,
+      "metLevel": 5,
+      "metSpecies": 263,
+      "metWave": -1,
+      "moveset": [
+        {
+          "moveId": 42,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 38,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 85,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 245,
+          "ppUp": 0,
+          "ppUsed": 0
+        }
+      ],
+      "mysteryEncounterPokemonData": null,
+      "nature": 1,
+      "passive": false,
+      "pauseEvolutions": false,
+      "player": true,
+      "pokeball": 0,
+      "pokerus": true,
+      "shiny": false,
+      "species": 264,
+      "stats": [
+        4817,
+        3156,
+        2310,
+        2199,
+        2551,
+        3857
+      ],
+      "status": null,
+      "stellarTypesBoosted": null,
+      "summonData": {
+        "abilitySuppressed": false,
+        "berriesEatenLast": null,
+        "illusionBroken": false,
+        "moveHistory": null,
+        "moveQueue": null,
+        "statStages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "tags": null,
+        "types": null
+      },
+      "teraType": 0,
+      "usedTMs": [
+        85
+      ],
+      "variant": 0
+    }
+  ],
+  "enemyParty": [
+    {
+      "abilityIndex": 0,
+      "battleData": {
+        "berriesEaten": null,
+        "hasEatenBerry": false,
+        "hitCount": 0
+      },
+      "boss": false,
+      "bossSegments": 0,
+      "customPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "exp": 4541308416,
+      "formIndex": 0,
+      "friendship": 50,
+      "fusionAbilityIndex": 1,
+      "fusionCustomPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "fusionFormIndex": 0,
+      "fusionGender": 0,
+      "fusionLuck": 0,
+      "fusionMysteryEncounterPokemonData": null,
+      "fusionShiny": false,
+      "fusionSpecies": 596,
+      "fusionTeraType": 0,
+      "fusionVariant": 0,
+      "gender": 1,
+      "hp": 4116,
+      "id": 1359252577,
+      "isTerastallized": false,
+      "ivs": [
+        8,
+        16,
+        9,
+        3,
+        3,
+        1
+      ],
+      "level": 1656,
+      "levelExp": 0,
+      "luck": 0,
+      "metBiome": 2,
+      "metLevel": 1656,
+      "metSpecies": 549,
+      "metWave": 851,
+      "moveset": [
+        {
+          "moveId": 527,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 97,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 86,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 202,
+          "ppUp": 0,
+          "ppUsed": 0
+        }
+      ],
+      "mysteryEncounterPokemonData": null,
+      "nature": 3,
+      "pauseEvolutions": false,
+      "player": false,
+      "pokeball": 0,
+      "pokerus": false,
+      "shiny": false,
+      "species": 549,
+      "stats": [
+        4116,
+        3029,
+        2604,
+        3744,
+        2306,
+        3300
+      ],
+      "status": null,
+      "stellarTypesBoosted": null,
+      "summonData": {
+        "abilitySuppressed": false,
+        "berriesEatenLast": null,
+        "illusionBroken": false,
+        "moveHistory": null,
+        "moveQueue": null,
+        "statStages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "tags": null,
+        "types": null
+      },
+      "teraType": 12,
+      "usedTMs": null,
+      "variant": 0
+    },
+    {
+      "abilityIndex": 1,
+      "battleData": {
+        "berriesEaten": null,
+        "hasEatenBerry": false,
+        "hitCount": 0
+      },
+      "boss": false,
+      "bossSegments": 0,
+      "customPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "exp": 4649101309,
+      "formIndex": 0,
+      "friendship": 50,
+      "fusionCustomPokemonData": {
+        "ability": -1,
+        "hitsRecCount": null,
+        "nature": -1,
+        "passive": -1,
+        "spriteScale": -1,
+        "types": null
+      },
+      "fusionLuck": 0,
+      "fusionMysteryEncounterPokemonData": null,
+      "fusionTeraType": 0,
+      "gender": 1,
+      "hp": 3998,
+      "id": 650360266,
+      "isTerastallized": false,
+      "ivs": [
+        19,
+        12,
+        7,
+        13,
+        14,
+        10
+      ],
+      "level": 1669,
+      "levelExp": 0,
+      "luck": 0,
+      "metBiome": 2,
+      "metLevel": 1669,
+      "metSpecies": 547,
+      "metWave": 851,
+      "moveset": [
+        {
+          "moveId": 412,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 76,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 178,
+          "ppUp": 0,
+          "ppUsed": 0
+        },
+        {
+          "moveId": 74,
+          "ppUp": 0,
+          "ppUsed": 0
+        }
+      ],
+      "mysteryEncounterPokemonData": null,
+      "nature": 21,
+      "pauseEvolutions": false,
+      "player": false,
+      "pokeball": 0,
+      "pokerus": false,
+      "shiny": false,
+      "species": 547,
+      "stats": [
+        3998,
+        2441,
+        2903,
+        2792,
+        3273,
+        4043
+      ],
+      "status": null,
+      "stellarTypesBoosted": null,
+      "summonData": {
+        "abilitySuppressed": false,
+        "berriesEatenLast": null,
+        "illusionBroken": false,
+        "moveHistory": null,
+        "moveQueue": null,
+        "statStages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "tags": null,
+        "types": null
+      },
+      "teraType": 11,
+      "usedTMs": null,
+      "variant": 0
+    }
+  ],
+  "modifiers": [
+    {
+      "args": [
+        1894525663,
+        1
+      ],
+      "className": "BaseStatModifier",
+      "player": true,
+      "stackCount": 12,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": null,
+      "className": "ExpShareModifier",
+      "player": true,
+      "stackCount": 5,
+      "typeId": "EXP_SHARE"
+    },
+    {
+      "args": null,
+      "className": "MoneyMultiplierModifier",
+      "player": true,
+      "stackCount": 4,
+      "typeId": "AMULET_COIN"
+    },
+    {
+      "args": [
+        1894525663,
+        5
+      ],
+      "className": "PokemonMoveAccuracyBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "WIDE_LENS"
+    },
+    {
+      "args": [
+        60
+      ],
+      "className": "ExpBoosterModifier",
+      "player": true,
+      "stackCount": 13,
+      "typeId": "SUPER_EXP_CHARM"
+    },
+    {
+      "args": [
+        1894525663
+      ],
+      "className": "DamageMoneyRewardModifier",
+      "player": true,
+      "stackCount": 5,
+      "typeId": "GOLDEN_PUNCH"
+    },
+    {
+      "args": [
+        25
+      ],
+      "className": "ExpBoosterModifier",
+      "player": true,
+      "stackCount": 68,
+      "typeId": "EXP_CHARM"
+    },
+    {
+      "args": [
+        4134396326,
+        10
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        10
+      ],
+      "className": "ContactHeldItemTransferChanceModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "GRIP_CLAW"
+    },
+    {
+      "args": null,
+      "className": "LevelIncrementBoosterModifier",
+      "player": true,
+      "stackCount": 10,
+      "typeId": "CANDY_JAR"
+    },
+    {
+      "args": null,
+      "className": "ExtraModifierModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "GOLDEN_POKEBALL"
+    },
+    {
+      "args": null,
+      "className": "HiddenAbilityRateBoosterModifier",
+      "player": true,
+      "stackCount": 4,
+      "typeId": "ABILITY_CHARM"
+    },
+    {
+      "args": [
+        1367109607,
+        10
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": null,
+      "className": "MegaEvolutionAccessModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "MEGA_BRACELET"
+    },
+    {
+      "args": [
+        3410825498,
+        16,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        16
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        3
+      ],
+      "className": "BaseStatModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": null,
+      "className": "CriticalCatchChanceBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "CATCHING_CHARM"
+    },
+    {
+      "args": [
+        1894525663
+      ],
+      "className": "BypassSpeedChanceModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "QUICK_CLAW"
+    },
+    {
+      "args": [
+        1894525663
+      ],
+      "className": "PokemonFriendshipBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "SOOTHE_BELL"
+    },
+    {
+      "args": [
+        1894525663,
+        5
+      ],
+      "className": "BaseStatModifier",
+      "player": true,
+      "stackCount": 11,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        5
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        4
+      ],
+      "className": "BaseStatModifier",
+      "player": true,
+      "stackCount": 6,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        1
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        7,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        7
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        10
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        10
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        29,
+        true
+      ],
+      "className": "PokemonFormChangeItemModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "RARE_FORM_CHANGE_ITEM",
+      "typePregenArgs": [
+        29
+      ]
+    },
+    {
+      "args": null,
+      "className": "GigantamaxAccessModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "DYNAMAX_BAND"
+    },
+    {
+      "args": [
+        3410825498,
+        1
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        2
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        1.1
+      ],
+      "className": "HealingBoosterModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "HEALING_CHARM"
+    },
+    {
+      "args": [
+        1894525663,
+        2
+      ],
+      "className": "BaseStatModifier",
+      "player": true,
+      "stackCount": 8,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        0
+      ],
+      "className": "BaseStatModifier",
+      "player": true,
+      "stackCount": 9,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        0
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        0
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        0
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        40
+      ],
+      "className": "PokemonExpBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "LUCKY_EGG"
+    },
+    {
+      "args": [
+        2426434308,
+        10
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        12,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        12
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        1,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        10,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        40
+      ],
+      "className": "PokemonExpBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "LUCKY_EGG"
+    },
+    {
+      "args": [
+        1744766657,
+        5
+      ],
+      "className": "PokemonMoveAccuracyBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "WIDE_LENS"
+    },
+    {
+      "args": [
+        1744766657,
+        2
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        4134396326
+      ],
+      "className": "PokemonFriendshipBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "SOOTHE_BELL"
+    },
+    {
+      "args": [
+        4134396326,
+        3
+      ],
+      "className": "BaseStatModifier",
+      "player": true,
+      "stackCount": 8,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": [
+        1894525663
+      ],
+      "className": "TurnHealModifier",
+      "player": true,
+      "stackCount": 4,
+      "typeId": "LEFTOVERS"
+    },
+    {
+      "args": null,
+      "className": "LockModifierTiersModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "LOCK_CAPSULE"
+    },
+    {
+      "args": [
+        1894525663,
+        10
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        0
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        0
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        18,
+        true
+      ],
+      "className": "PokemonFormChangeItemModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "RARE_FORM_CHANGE_ITEM",
+      "typePregenArgs": [
+        18
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        5
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        5
+      ]
+    },
+    {
+      "args": [
+        1367109607
+      ],
+      "className": "PokemonFriendshipBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "SOOTHE_BELL"
+    },
+    {
+      "args": [
+        1894525663
+      ],
+      "className": "HitHealModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "SHELL_BELL"
+    },
+    {
+      "args": [
+        1894525663
+      ],
+      "className": "SurviveDamageModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "FOCUS_BAND"
+    },
+    {
+      "args": [
+        1367109607,
+        8
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        8
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        4
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        1,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        9
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        9
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        9
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        9
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        3
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        56,
+        true
+      ],
+      "className": "PokemonFormChangeItemModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "RARE_FORM_CHANGE_ITEM",
+      "typePregenArgs": [
+        56
+      ]
+    },
+    {
+      "args": [
+        1894525663
+      ],
+      "className": "PokemonNatureWeightModifier",
+      "player": true,
+      "stackCount": 4,
+      "typeId": "SOUL_DEW"
+    },
+    {
+      "args": [
+        4134396326
+      ],
+      "className": "BypassSpeedChanceModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "QUICK_CLAW"
+    },
+    {
+      "args": [
+        1894525663,
+        3
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        1,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        9
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        9
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        7
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        7
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        5
+      ],
+      "className": "PokemonMoveAccuracyBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "WIDE_LENS"
+    },
+    {
+      "args": null,
+      "className": "PreserveBerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY_POUCH"
+    },
+    {
+      "args": null,
+      "className": "IvScannerModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "IV_SCANNER"
+    },
+    {
+      "args": [
+        1894525663,
+        3,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        3
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        6
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        6
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        8
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        8
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        5
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        5
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        3
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        1
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        14,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        14
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        2,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        6,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        6
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        6
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        6
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        8
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        8
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        10,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        1
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        4134396326
+      ],
+      "className": "HitHealModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "SHELL_BELL"
+    },
+    {
+      "args": [
+        1367109607
+      ],
+      "className": "BypassSpeedChanceModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "QUICK_CLAW"
+    },
+    {
+      "args": [
+        1894525663,
+        6,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        6
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        7
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        7
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        0
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        0
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        4
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        40
+      ],
+      "className": "PokemonExpBoosterModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "LUCKY_EGG"
+    },
+    {
+      "args": [
+        1367109607
+      ],
+      "className": "PokemonInstantReviveModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "REVIVER_SEED"
+    },
+    {
+      "args": [
+        1744766657
+      ],
+      "className": "BypassSpeedChanceModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "QUICK_CLAW"
+    },
+    {
+      "args": [
+        1894525663,
+        8
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        8
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        9
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        9
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        6
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        6
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        5
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        5
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        5,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        5
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        2
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        4
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        3
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        8
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        8
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        9
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        9
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        6
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        6
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        0
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        0
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        7
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        7
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        0
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        0
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        3
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        8
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        8
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        16,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 5,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        16
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        4
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        0
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        0
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        1
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        7
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        7
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        1
+      ],
+      "className": "CritBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "SCOPE_LENS"
+    },
+    {
+      "args": [
+        1894525663,
+        13,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 5,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        13
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        9,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 11,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        9
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        5
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        5
+      ]
+    },
+    {
+      "args": [
+        3410825498,
+        4
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        1
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        6
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        6
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        4
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        9
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        9
+      ]
+    },
+    {
+      "args": [
+        1894525663
+      ],
+      "className": "PokemonMultiHitModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "MULTI_LENS"
+    },
+    {
+      "args": [
+        1894525663,
+        40
+      ],
+      "className": "PokemonExpBoosterModifier",
+      "player": true,
+      "stackCount": 15,
+      "typeId": "LUCKY_EGG"
+    },
+    {
+      "args": [
+        1894525663
+      ],
+      "className": "FlinchChanceModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "KINGS_ROCK"
+    },
+    {
+      "args": [
+        1894525663,
+        4,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 4,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        5
+      ],
+      "className": "PokemonMoveAccuracyBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "WIDE_LENS"
+    },
+    {
+      "args": null,
+      "className": "ShinyRateBoosterModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "SHINY_CHARM"
+    },
+    {
+      "args": [
+        1744766657,
+        40
+      ],
+      "className": "PokemonExpBoosterModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "LUCKY_EGG"
+    },
+    {
+      "args": [
+        1894525663,
+        14,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        14
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        0,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 13,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        0
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        2,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 4,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        10,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 9,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        17,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        17
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        12,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        12
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        8,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 7,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        8
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        5
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        5
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        6
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        6
+      ]
+    },
+    {
+      "args": [
+        4134396326,
+        2
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        1367109607,
+        2
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        1744766657,
+        7
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        7
+      ]
+    },
+    {
+      "args": [
+        1894525663,
+        11,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        11
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        7
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 3,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        7
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        5
+      ],
+      "className": "BerryModifier",
+      "player": true,
+      "stackCount": 2,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        5
+      ]
+    },
+    {
+      "args": [
+        2426434308,
+        40
+      ],
+      "className": "PokemonExpBoosterModifier",
+      "player": true,
+      "stackCount": 1,
+      "typeId": "LUCKY_EGG"
+    }
+  ],
+  "enemyModifiers": [
+    {
+      "args": [
+        5.000000000000004
+      ],
+      "className": "EnemyDamageBoosterModifier",
+      "player": false,
+      "stackCount": 6,
+      "typeId": "ENEMY_DAMAGE_BOOSTER"
+    },
+    {
+      "args": [
+        2.500000000000002
+      ],
+      "className": "EnemyDamageReducerModifier",
+      "player": false,
+      "stackCount": 7,
+      "typeId": "ENEMY_DAMAGE_REDUCTION"
+    },
+    {
+      "args": [
+        3,
+        2.5
+      ],
+      "className": "EnemyAttackStatusEffectChanceModifier",
+      "player": false,
+      "stackCount": 5,
+      "typeId": "ENEMY_ATTACK_PARALYZE_CHANCE"
+    },
+    {
+      "args": [
+        2
+      ],
+      "className": "EnemyEndureChanceModifier",
+      "player": false,
+      "stackCount": 10,
+      "typeId": "ENEMY_ENDURE_CHANCE"
+    },
+    {
+      "args": [
+        2.5
+      ],
+      "className": "EnemyStatusEffectHealChanceModifier",
+      "player": false,
+      "stackCount": 10,
+      "typeId": "ENEMY_STATUS_EFFECT_HEAL_CHANCE"
+    },
+    {
+      "args": [
+        6,
+        5
+      ],
+      "className": "EnemyAttackStatusEffectChanceModifier",
+      "player": false,
+      "stackCount": 4,
+      "typeId": "ENEMY_ATTACK_BURN_CHANCE"
+    },
+    {
+      "args": [
+        1
+      ],
+      "className": "EnemyFusionChanceModifier",
+      "player": false,
+      "stackCount": 5,
+      "typeId": "ENEMY_FUSED_CHANCE"
+    },
+    {
+      "args": [
+        1,
+        5
+      ],
+      "className": "EnemyAttackStatusEffectChanceModifier",
+      "player": false,
+      "stackCount": 3,
+      "typeId": "ENEMY_ATTACK_POISON_CHANCE"
+    },
+    {
+      "args": [
+        1359252577,
+        1
+      ],
+      "className": "BaseStatModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        1359252577,
+        3
+      ],
+      "className": "BaseStatModifier",
+      "player": false,
+      "stackCount": 2,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        3
+      ]
+    },
+    {
+      "args": [
+        1359252577,
+        4
+      ],
+      "className": "BerryModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        1359252577,
+        1
+      ],
+      "className": "BerryModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        1
+      ]
+    },
+    {
+      "args": [
+        1359252577,
+        2
+      ],
+      "className": "BaseStatModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        1359252577,
+        0
+      ],
+      "className": "BerryModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        0
+      ]
+    },
+    {
+      "args": [
+        650360266,
+        4
+      ],
+      "className": "BaseStatModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        650360266,
+        2
+      ],
+      "className": "BaseStatModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BASE_STAT_BOOSTER",
+      "typePregenArgs": [
+        2
+      ]
+    },
+    {
+      "args": [
+        650360266,
+        10
+      ],
+      "className": "BerryModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        10
+      ]
+    },
+    {
+      "args": [
+        650360266,
+        5
+      ],
+      "className": "BerryModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        5
+      ]
+    },
+    {
+      "args": [
+        650360266,
+        9
+      ],
+      "className": "BerryModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        9
+      ]
+    },
+    {
+      "args": [
+        650360266,
+        11,
+        20
+      ],
+      "className": "AttackTypeBoosterModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "ATTACK_TYPE_BOOSTER",
+      "typePregenArgs": [
+        11
+      ]
+    },
+    {
+      "args": [
+        650360266,
+        4
+      ],
+      "className": "BerryModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        4
+      ]
+    },
+    {
+      "args": [
+        650360266,
+        1
+      ],
+      "className": "BerryModifier",
+      "player": false,
+      "stackCount": 1,
+      "typeId": "BERRY",
+      "typePregenArgs": [
+        1
+      ]
+    }
+  ],
+  "arena": {
+    "biome": 2,
+    "playerTerasUsed": 0,
+    "positionalTags": null,
+    "tags": null,
+    "terrain": null,
+    "weather": {
+      "maxDuration": 0,
+      "turnsLeft": 0,
+      "weatherType": 2
+    }
+  },
+  "pokeballCounts": {
+    "0": 5,
+    "1": 0,
+    "2": 52,
+    "3": 17,
+    "4": 4
+  },
+  "money": 3334382,
+  "score": 264532,
+  "victoryCount": 0,
+  "faintCount": 0,
+  "reviveCount": 0,
+  "waveIndex": 851,
+  "battleType": 0,
+  "trainer": null,
+  "gameVersion": "1.11.3",
+  "timestamp": 1764074676653,
+  "challenges": null,
+  "mysteryEncounterType": -1,
+  "mysteryEncounterSaveData": {
+    "encounteredEvents": null,
+    "encounterSpawnChance": 3,
+    "queuedEncounters": null
+  },
+  "name": "Endless (38)"
+}

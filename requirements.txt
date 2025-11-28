@@ -9,3 +9,8 @@ requests
 rapidfuzz
 gym
 keyboard
+pycryptodome
+torch
+websocket-client
+matplotlib
+pillow

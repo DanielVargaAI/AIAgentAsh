@@ -21,7 +21,7 @@ def get_save_string():
         "id": 1,
         "method": "Runtime.evaluate",
         "params": {
-            "expression": "localStorage.sessionData_Ripstop"
+            "expression": "JSON.stringify(globalScene)"
         }
     }
 
@@ -41,3 +41,4 @@ if __name__ == "__main__":
 
     # open cmd, cd into app directory and run:
     # PokeRogue.exe --remote-debugging-port=9222 --remote-allow-origins=http://localhost:9222
+    # "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="C:\ChromeDebug" --remote-allow-origins=*
