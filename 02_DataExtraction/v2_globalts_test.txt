@@ -1,0 +1,90 @@
+import type { BattleScene } from "./battle-scene";
+import type { Pokemon } from "./pokemon"; 
+
+export let globalScene: BattleScene;
+
+export function initGlobalScene(scene: BattleScene): void {
+  globalScene = scene;
+  // Expose to window for Selenium
+  // @ts-ignore
+  window.globalScene = globalScene;
+
+  // Define the extraction function directly on the window object
+  // @ts-ignore
+  window.__GLOBAL_SCENE_DATA__ = () => {
+    
+    // --- HELPER: Extract Detailed Data from a Pokemon Object ---
+    const sanitizePokemon = (mon: any) => {
+      if (!mon) return null;
+      
+      // Extract Moves with PP
+      const moves = mon.moves ? mon.moves.map((m: any) => ({
+          id: m.moveId,
+          name: m.name,
+          pp: m.pp,
+          // We extract type here if available, otherwise Python looks it up
+          type: m.type 
+        })) : [];
+
+      return {
+        // ID & Species
+        speciesId: mon.species?.speciesId || 0,
+        name: mon.species?.name || "Unknown",
+        
+        // Types (Crucial for V2)
+        type1: mon.species?.type1 || 0,
+        type2: mon.species?.type2 || 0,
+        
+        // Vital Stats
+        level: mon.level || 1,
+        hp: mon.hp || 0,
+        maxHp: mon.maxHp || 1,
+        status: mon.status?.effect || 0, // 0=None, 1=Sleep, 2=Poison, 3=Burn, 4=Freeze, 5=Paralyze
+        
+        // Combat Stats (If dynamic stats are calculated on the object)
+        // Note: These might be under 'stats' or 'getStat(0)' depending on implementation
+        stats: {
+            atk: mon.stats ? mon.stats[0] : 0,
+            def: mon.stats ? mon.stats[1] : 0,
+            spAtk: mon.stats ? mon.stats[2] : 0,
+            spDef: mon.stats ? mon.stats[3] : 0,
+            spd: mon.stats ? mon.stats[4] : 0
+        },
+
+        // Action Options
+        moves: moves
+      };
+    };
+
+    // --- HELPER 2: Get Enemy Party safely ---
+    let enemyMon = null;
+    let enemyParty = [];
+    if (scene.currentBattle) {
+       // @ts-ignore
+       enemyParty = scene.currentBattle.enemyParty || [];
+       // @ts-ignore
+       const enemyIndex = scene.currentBattle.turn % enemyParty.length || 0;
+       enemyMon = enemyParty[enemyIndex] || enemyParty[0];
+    }
+
+    // --- MAIN RETURN OBJECT ---
+    return {
+      // META DATA
+      phase: scene.phaseManager ? scene.phaseManager.currentPhase.constructor.name : "Unknown",
+      turn: scene.currentBattle ? scene.currentBattle.turn : 0,
+      
+      // ENVIRONMENT
+      weather: scene.arena ? scene.arena.weather : 0,
+      biome: scene.arena ? scene.arena.biomeType : 0,
+
+      // TEAMS
+      myParty: scene.party.map(p => sanitizePokemon(p)),
+      enemyActive: sanitizePokemon(enemyMon),
+      
+      // STATE COUNTS
+      enemiesLeft: enemyParty.filter((e: any) => e.hp > 0).length
+    };
+  };
+  
+  console.log("[AI-Agent] Full Data Hooks Initialized");
+}

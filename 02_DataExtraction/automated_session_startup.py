@@ -21,7 +21,7 @@ with open("copied_save_data.txt", "r") as f:
 driver.execute_script(f"localStorage.setItem('data_Guest', '{file_content}');")
 time.sleep(1)
 driver.refresh()
-time.sleep(8)
+time.sleep(8) 
 
 from selenium.webdriver.support.ui import WebDriverWait
 WebDriverWait(driver, timeout=10).until(

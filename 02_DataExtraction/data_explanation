@@ -90,3 +90,28 @@ enemyModifiers: list of active modifiers (Enemy)
 arena: current stage data
 - biomeType: int (0=Town)
 - weather: in this case undefined
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Luis
