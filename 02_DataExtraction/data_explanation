@@ -1,0 +1,92 @@
+Phases: (phaseManager.currentPhase.phaseName)
+- CheckSwitchPhase: Switching before the fight starts
+    - fieldIndex: index of the pokemon to be switched (left to right)
+- CommandPhase: (Fight/Ball/Pokemon/Run) Using one of those buttons doesn't change phase
+    - fieldIndex: index of the pokemon to use the command with (left to right)
+- MessagePhase: Enemy fainted message
+- ExpPhase: exp gain
+- SelectModifierPhase: Shop
+    - phaseManager.currentPhase.typeOptions: list of items to select (min=3, max=5/6)
+        - list element.type: Item data
+        - list element.cost: should always be 0
+        - list element.upgradeCount: did the item get upgraded? 0 if it stays the same, 1+ if upgraded (chance to upgrade influenced by luck)
+    - phaseManager.currentPhase.rerollCount: number of rerolls done
+    - phaseManager.currentPhase.modifierTiers: ?
+        - on shop open: undefined
+        - on first reroll: [0, 0, 0]
+    -> No information about buyable items or their costs is stored here, also no info about reroll costs
+
+
+
+Items: (tier could be rarity: 0=white, 1=blue, 2=gold)
+- Berries:
+    - group: "berry"
+    - berryType: int (1=LumBerry?)
+    - iconImage: e.g. "lum_berry"
+    - tier: 0
+    - id: "BERRY"
+    - localeKey: ""
+- TMs:
+    - group: "tm"
+    - modeId: int (466=StealthRock)
+    - iconImage: e.g. "tm_rock" <-move type, not specific move
+    - tier: 0
+    - id: "TM_COMMON"
+    - localeKey: ""
+- Buffs/Modifiers:
+    - Rare Candy:
+        - group: undefined
+        - id: "RARE_CANDY"
+        - tier: 0
+        - localeKey: "modifierType:ModifierType.RARE_CANDY"
+    - Booster:
+        - group: undefined
+        - iconImage: "dire_hit"
+        - tier: 1
+        - id: "DIRE_HIT"
+        - localeKey: "modifierType:ModifierType.DIRE_HIT"
+- Pokeballs:
+    - group: "pb"
+    - iconImage: "pb"
+    - tier: 0
+    - id: "POKEBALL"
+    - localeKey: ""
+- Lure:
+    - group: "lure"
+    - iconImage: e.g. "super_lure"
+    - tier: 1
+    - id: "SUPER_LURE"
+    - localeKey: "modifierType:ModifierType.SUPER_LURE"
+    - maxBattles: int (15) (should be 10-15-20 based on lure tier)
+- Money:
+    - group: "money"
+    - iconImage: e.g. "big_nugget"
+    - tier: 2
+    - id: "MONEY"
+    - localeKey: "modifierType:ModifierType.BIG_NUGGET"
+    - moneyMultiplier: 2.5
+
+
+
+pokeballCounts: dict of pokeballs owned
+- {0: Pokeball count, 1: Great Ball count, 2: Ultra Ball count, 3: Rogue Ball count, 4: Master Ball count}
+
+
+
+money: current Money
+
+
+
+party: Player party (list)
+currentBattle.enemyParty: Enemy party (list)
+
+
+
+modifiers: list of active modifiers (Player)
+enemyModifiers: list of active modifiers (Enemy)
+
+
+
+arena: current stage data
+- biomeType: int (0=Town)
+- weather: in this case undefined
