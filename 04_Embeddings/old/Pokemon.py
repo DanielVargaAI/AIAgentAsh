@@ -22,8 +22,8 @@ class Pokemon:
 
 
 def save_js_to_json():
-    input_file = "pokedex_data.js"
-    output_file = "pokedex_data.json"
+    input_file = "../Pokemon/pokedex_data.js"
+    output_file = "../Pokemon/pokedex_data.json"
 
     with open(input_file, "r", encoding="utf-8") as f:
         js = f.read()
@@ -47,14 +47,14 @@ def save_js_to_json():
 
 def delete_numerical_keys():
     pokedex_data_cropped = list()
-    with open("pokedex_data.json", "r") as f:
+    with open("../Pokemon/pokedex_data.json", "r") as f:
         data = json.loads(f.read())
         for pokemon in data:
             pokedex_data_cropped.append(dict())
             for key in pokemon.keys():
                 if not key.isnumeric():
                     pokedex_data_cropped[-1][key] = pokemon[key]
-    with open("pokedex_data.json", "w") as f:
+    with open("../Pokemon/pokedex_data.json", "w") as f:
         f.write(json.dumps(pokedex_data_cropped))
 
 
@@ -65,7 +65,7 @@ def create_pokedex_database():
     type_names = list(settings.type_matrix.keys())
     type_names.sort()
 
-    with open("pokedex_data.json", "r") as f:
+    with open("../Pokemon/pokedex_data.json", "r") as f:
         data = json.loads(f.read())
         for pokemon in data:
             response = requests.get(str("https://pokeapi.co/api/v2/pokemon/" + str(pokemon["dex"])), data={"species"})

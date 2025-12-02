@@ -48,22 +48,22 @@ def create_input_vector(data, move_database, pokemon_database, type_database):
     input_vector = []
     # Enemy 1
     input_vector.extend(Pokemon.get_pokemon_vector(data["enemy1_name"],
-                                                  [data["enemy1_type1"], data["enemy1_type2"]],
-                                                  data["enemy1_status"],
-                                                  data["enemy1_health"],
-                                                  data["enemy1_level"], pokemon_database, type_database))
+                                                   [data["enemy1_type1"], data["enemy1_type2"]],
+                                                   data["enemy1_status"],
+                                                   data["enemy1_health"],
+                                                   data["enemy1_level"], pokemon_database, type_database))
     # Enemy 2
     input_vector.extend(Pokemon.get_pokemon_vector(data["enemy2_name"],
-                                                  [data["enemy2_type1"], data["enemy2_type2"]],
-                                                  data["enemy2_status"],
-                                                  data["enemy2_health"],
-                                                  data["enemy2_level"], pokemon_database, type_database))
+                                                   [data["enemy2_type1"], data["enemy2_type2"]],
+                                                   data["enemy2_status"],
+                                                   data["enemy2_health"],
+                                                   data["enemy2_level"], pokemon_database, type_database))
     # Ally 1
     input_vector.extend(Pokemon.get_pokemon_vector(data["ally1_name"],
-                                                  [data["ally1_type1"], data["ally1_type2"]],
-                                                  data["ally1_status"],
-                                                  data["ally1_health"],
-                                                  data["ally1_level"], pokemon_database, type_database))
+                                                   [data["ally1_type1"], data["ally1_type2"]],
+                                                   data["ally1_status"],
+                                                   data["ally1_health"],
+                                                   data["ally1_level"], pokemon_database, type_database))
     # Ally 1 Moves
     for i in range(1, 5):
         move_name = data[f"ally1_attack{i}_name"]
@@ -72,10 +72,10 @@ def create_input_vector(data, move_database, pokemon_database, type_database):
         input_vector.extend(move_vector)
     # Ally 2
     input_vector.extend(Pokemon.get_pokemon_vector(data["ally2_name"],
-                                                  [data["ally2_type1"], data["ally2_type2"]],
-                                                  data["ally2_status"],
-                                                  data["ally2_health"],
-                                                  data["ally2_level"], pokemon_database, type_database))
+                                                   [data["ally2_type1"], data["ally2_type2"]],
+                                                   data["ally2_status"],
+                                                   data["ally2_health"],
+                                                   data["ally2_level"], pokemon_database, type_database))
     # Ally 2 Moves
     for i in range(1, 5):
         move_name = data[f"ally2_attack{i}_name"]

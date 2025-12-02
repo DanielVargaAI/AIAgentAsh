@@ -26,6 +26,44 @@ type_matrix = {
     "fairy":    [1, 1, 0.5, 1, 1, 1, 2, 0.5, 1, 1, 1, 1, 1, 1, 2, 2, 0.5, 1],
 }
 
+type_ids = {
+    -1: "UNKNOWN",
+    0: "NORMAL",
+    1: "FIGHTING",
+    2: "FLYING",
+    3: "POISON",
+    4: "GROUND",
+    5: "ROCK",
+    6: "BUG",
+    7: "GHOST",
+    8: "STEEL",
+    9: "FIRE",
+    10: "WATER",
+    11: "GRASS",
+    12: "ELECTRIC",
+    13: "PSYCHIC",
+    14: "ICE",
+    15: "DRAGON",
+    16: "DARK",
+    17: "FAIRY",
+    18: "STELLAR"
+}
+
+form_ids = {
+    0: "",  # normal form
+    1: "mega",
+    2: "mega-x",
+    3: "mega-y",
+    4: "primal",
+    5: "origin",
+    6: "incarnate",
+    7: "therian",
+    8: "gigantamax",
+    9: "gigantamax-single",
+    10: "gigantamax-rapid",
+    11: "eternamax",
+}
+
 status_matrix = {
     "none": float(),
     "paralyzed": float(),
