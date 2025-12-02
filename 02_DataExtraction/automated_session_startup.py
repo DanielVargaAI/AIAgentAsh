@@ -27,6 +27,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 WebDriverWait(driver, timeout=10).until(
     lambda d: d.execute_script("return typeof window.__GLOBAL_SCENE_DATA__ === 'function';")
 )
-print(driver.execute_script("return window.__GLOBAL_SCENE_DATA__();"))
-time.sleep(3)
-print(driver.execute_script("return window.__GLOBAL_SCENE_DATA__();"))
+# print(driver.execute_script("return window.__GLOBAL_SCENE_DATA__();"))
+# time.sleep(3)
+# print(driver.execute_script("return window.__GLOBAL_SCENE_DATA__();"))
+
+while True:
+    if keyboard.is_pressed('p'):
+        print(driver.execute_script("return window.__GLOBAL_SCENE_DATA__();"))
+        break

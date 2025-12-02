@@ -74,12 +74,15 @@ def create_move_embeddings():
 
 def get_move_embedding(move_id: int, embeddings_data: dict) -> list:
     """Returns the embedding for a given move ID."""
-    return embeddings_data.get(str(move_id), [0] * 4)  # return zero vector if move_id not found
+    if move_id not in embeddings_data.keys():
+        return embeddings_data.get(str(move_id), [0] * 4)  # return zero vector if move_id not found
+    else:
+        return embeddings_data[move_id]
 
 
 if __name__ == "__main__":
     # collect_move_data()
     # create_move_embeddings()
-    with open("moves\\move_embeddings.json", "r") as f:
+    with open("move_embeddings.json", "r") as f:
         move_embeddings = json.loads(f.read())
-        print(get_move_embedding(1, move_embeddings))  # Example usage
+        print(get_move_embedding(39, move_embeddings))  # Example usage

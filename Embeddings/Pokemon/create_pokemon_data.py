@@ -60,6 +60,12 @@ def create_pokemon_embeddings():
                 combined_type_vector.append(1)
             else:
                 combined_type_vector.append(0)
+        # combined_ability_vector = []
+        # for a in range(327):
+        #     if ("a1" in pkm.keys() and pkm["a1"] == a) or ("a2" in pkm.keys() and pkm["a2"] == a) or ("ha" in pkm.keys() and pkm["ha"] == a) or ("pa" in pkm.keys() and pkm["pa"] == a):
+        #         combined_ability_vector.append(1)
+        #     else:
+        #         combined_ability_vector.append(0)
         ability1 = pkm["a1"] if "a1" in pkm.keys() else -1
         ability2 = pkm["a2"] if "a2" in pkm.keys() else -1
         hidden_ability = pkm["ha"] if "ha" in pkm.keys() else -1
@@ -71,10 +77,17 @@ def create_pokemon_embeddings():
         spa = pkm["spa"]
         spd = pkm["spd"]
         spe = pkm["spe"]
+        e1 = pkm["e1"] if "e1" in pkm.keys() else -1
+        e2 = pkm["e2"] if "e2" in pkm.keys() else -1
+        e3 = pkm["e3"] if "e3" in pkm.keys() else -1
+        e4 = pkm["e4"] if "e4" in pkm.keys() else -1
+        co = pkm["co"] if "co" in pkm.keys() else -1
         generation = pkm["ge"]
         family = pkm["fa"] if "fa" in pkm.keys() else -1
         pkm_vector = combined_type_vector + [ability1, ability2, hidden_ability, passive,
+        # pkm_vector = combined_type_vector + combined_ability_vector + [
                                              sum_points, hp, atk, defence, spa, spd, spe,
+                                             e1, e2, e3, e4, co,
                                              generation, family]
         pkm_data_list.append(pkm_vector)
         if str(pkm["dex"]) != pkm_ids[-1].split("-")[0] if pkm_ids else -1:
@@ -88,7 +101,7 @@ def create_pokemon_embeddings():
     scaler = StandardScaler()
     scaled_data = scaler.fit_transform(pkm_data_list)
 
-    pca = PCA(n_components=4)
+    pca = PCA(n_components=8)
     move_embeddings = pca.fit_transform(scaled_data)
 
     move_embedding_dict = {}
@@ -126,6 +139,19 @@ def get_similar_pokemon_embeddings(dex: int, form_index: int, top_k: int = 5, em
     return similar_pokemons
 
 
+def get_distance_between_pokemon(dex1: int, form_index1: int, dex2: int, form_index2: int, embeddings_data: dict = None):
+    import numpy as np
+
+    pkm_key_name1 = str(dex1) + "-" + str(form_index1)
+    pkm_key_name2 = str(dex2) + "-" + str(form_index2)
+
+    embedding1 = np.array(embeddings_data[pkm_key_name1])
+    embedding2 = np.array(embeddings_data[pkm_key_name2])
+
+    distance = np.linalg.norm(embedding1 - embedding2)
+    return distance
+
+
 if __name__ == "__main__":
     # save_js_to_json()
     # delete_numerical_keys()
@@ -134,3 +160,4 @@ if __name__ == "__main__":
         embeddings_data = json.loads(f.read())
     # print(get_pokemon_embedding(6, 2))
     print(get_similar_pokemon_embeddings(6, 0, top_k=10, embeddings_data=embeddings_data))
+    # print(get_distance_between_pokemon(6, 0, 169, 0, embeddings_data=embeddings_data))
