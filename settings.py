@@ -94,6 +94,17 @@ action_keymap = {
     6: 'Enter'  # Start
 }
 
+BUTTON_KEYCODES = {
+    "UP": 38,
+    "DOWN": 40,
+    "LEFT": 37,
+    "RIGHT": 39,
+    "ENTER": 13,
+    "SPACE": 32,
+    "BACKSPACE": 8,
+    "C": 67,
+}
+
 biomes = ["Abyss", "Ancient Ruins", "Badlands", "Beach", "Cave", "Construction Site", "Desert", "Dojo", "Factory", "Fairy Cave", "Forest",
           "Grassy Fields", "Graveyard", "Ice Cave", "Island", "Jungle", "Laboratory", "Lake", "Meadow", "Metropolis", "Mountain", "Plains",
           "Power Plant", "Sea", "Seabed", "Slum", "Snowy Forest", "Space", "Swamp", "Tall Grass", "Temple", "Town", "Volcano", "Wasteland", "End"]

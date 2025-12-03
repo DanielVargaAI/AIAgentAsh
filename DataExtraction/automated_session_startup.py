@@ -3,6 +3,7 @@ from selenium.webdriver.firefox.options import Options
 import keyboard
 import json
 import time
+from Environment.send_key_inputs import press_button
 
 # Headless (optional)
 options = Options()
@@ -34,4 +35,7 @@ WebDriverWait(driver, timeout=10).until(
 while True:
     if keyboard.is_pressed('p'):
         print(driver.execute_script("return window.__GLOBAL_SCENE_DATA__();"))
+        break
+    if keyboard.is_pressed('q'):
+        press_button(driver, "SPACE")
         break
