@@ -106,9 +106,17 @@ BUTTON_KEYCODES = {
 }
 
 phases = {
-    "nothing_to_do": ["EncounterPhase", "SummonPhase"],  # you can't really do anything here
-    "skip_information": [],  # you can only press space to accept, no options
-    "complicated": ["CheckSwitchPhase"],  # phases with more than one option
+    "nothing_to_do": ["EncounterPhase", "SummonPhase", "LoginPhase", "InitEncounterPhase", "PostSummonPhase", "TurnInitPhase", "EnemyCommandPhase",
+                      "VictoryPhase", "ShowPartyExpBarPhase", "HidePartyExpBarPhase", "LevelUpPhase", "MoveEndPhase", "MovePhase",
+                      "CheckInterludePhase", "WeatherEffectPhase", "PositionalTagPhase", "BerryPhase", "CheckStatusEffectPhase", "TurnEndPhase",
+                      "BattleEndPhase", "EggLapsePhase", "NewBattlePhase", "NextEncounterPhase", "ToggleDoublePositionPhase", "TurnStartPhase",
+                      "MoveEffectPhase", "DamageAnimPhase", "FaintPhase", "StatStageChangePhase", "ShowTrainerPhase", "MessagePhase",
+                      "SwitchSummonPhase", "HideAbilityPhase", "ShowAbilityPhase", "ReturnPhase", "TeraPhase", "PostGameOverPhase", "AttemptRunPhase",
+                      "SelectBiomePhase", "PartyHealPhase", "ResetStatusPhase", "SwitchBiomePhase", "NewBiomeEncounterPhase"],  # you can't really do anything here
+    "skip_information": ["MessagePhase", "ExpPhase", "MoneyRewardPhase", "LevelCapPhase"],  # you can only press space to accept, no options
+    "complicated": ["CheckSwitchPhase", "TitlePhase", "CommandPhase", "LearnMovePhase", "SelectModifierPhase", "AttemptCapturePhase",
+                    "NextEncounterPhase", "SwitchPhase", "TrainerVictoryPhase", "GameOverPhase", "SelectStarterPhase", "SelectTargetPhase",
+                    "EggLapsePhase", "EggSummaryPhase", "ModifierRewardPhase", "SelectBiomePhase", "EggHatchPhase"],  # phases with more than one option
 }
 
 biomes = ["Abyss", "Ancient Ruins", "Badlands", "Beach", "Cave", "Construction Site", "Desert", "Dojo", "Factory", "Fairy Cave", "Forest",
