@@ -39,3 +39,5 @@ while True:
     if keyboard.is_pressed('q'):
         press_button(driver, "SPACE")
         break
+
+print(driver.execute_script("return globalScene.phaseManager"))

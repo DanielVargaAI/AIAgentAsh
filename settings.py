@@ -105,6 +105,12 @@ BUTTON_KEYCODES = {
     "C": 67,
 }
 
+phases = {
+    "nothing_to_do": ["EncounterPhase", "SummonPhase"],  # you can't really do anything here
+    "skip_information": [],  # you can only press space to accept, no options
+    "complicated": ["CheckSwitchPhase"],  # phases with more than one option
+}
+
 biomes = ["Abyss", "Ancient Ruins", "Badlands", "Beach", "Cave", "Construction Site", "Desert", "Dojo", "Factory", "Fairy Cave", "Forest",
           "Grassy Fields", "Graveyard", "Ice Cave", "Island", "Jungle", "Laboratory", "Lake", "Meadow", "Metropolis", "Mountain", "Plains",
           "Power Plant", "Sea", "Seabed", "Slum", "Snowy Forest", "Space", "Swamp", "Tall Grass", "Temple", "Town", "Volcano", "Wasteland", "End"]
