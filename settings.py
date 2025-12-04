@@ -126,4 +126,5 @@ biomes = ["Abyss", "Ancient Ruins", "Badlands", "Beach", "Cave", "Construction S
 reward_weights = {
     "damage_dealt": 1.0,
     "damage_taken": 1.25,
+    "hp": 100,
 }

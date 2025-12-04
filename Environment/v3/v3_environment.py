@@ -18,7 +18,7 @@ class PokeRogueEnv(gym.Env):
         # Define action and observation space
         # They must be gym.spaces objects
         self.action_space = spaces.MultiDiscrete([4, 2, 4, 2])
-        self.observation_space = spaces.Box(low=-100, high=100, shape=(82,), dtype=np.float32)
+        self.observation_space = spaces.Box(low=-100, high=100, shape=(82,), dtype=np.float32)  # TODO change dimension
         self.last_obs = []
         self.new_obs = []
         self.last_meta_data = dict()
@@ -55,19 +55,35 @@ class PokeRogueEnv(gym.Env):
         self.last_obs = self.new_obs
         return self._get_obs(), reward, self.terminated, self.truncated, {}
 
+    def _handle_phase(self):
+        """
+        if self.new_meta_data["phase"] in settings.phases["nothing_to_do"]:
+            get new obs
+        elif ... in phases["skip_information"]:
+            press button space
+            get new obs
+        else:
+            return with phase
+        check if last obs was same phase, in case we update faster than the environment
+        need to define the button sequence for every action in every phase where we have to do stuff
+        """
+        pass
+
     def _get_reward(self) -> float:
         reward = 0.0
         # {"phase": dict["phase"]["phaseName"], "stage": dict["metaData"]["waveIndex"],
         #                  "hp_values": {"enemies": {}, "players": {}}}
-        if self.last_meta_data["stage"] == self.new_meta_data["stage"]:
-            for pkm_id, hp_value in self.last_meta_data["hp_values"]["enemies"].items():
-                reward += ((hp_value - self.new_meta_data["hp_values"]["enemies"].get(pkm_id, 0.0))
-                           * 100 * settings.reward_weights["damage_dealt"])
-            for pkm_id, hp_value in self.last_meta_data["hp_values"]["players"].items():
-                reward -= ((hp_value - self.new_meta_data["hp_values"]["players"].get(pkm_id, 0.0))
-                           * 100 * settings.reward_weights["damage_taken"])
-        # TODO: within 10th wave, new enemies (can i get dmg, while new enemies spawn?)
-        # TODO: 10th wave completed, pokemon healed
+        for pkm_id, hp_value in self.new_meta_data["hp_values"]["enemies"].items():
+            if pkm_id in self.last_meta_data["hp_values"]["enemies"].keys():
+                reward += ((self.last_meta_data["hp_values"]["enemies"][pkm_id] -
+                            self.new_meta_data["hp_values"]["enemies"][pkm_id])
+                           * settings.reward_weights["hp"] * settings.reward_weights["damage_dealt"])
+        if self.new_meta_data["stage"] % 10 != 0 or self.new_meta_data["stage"] == self.last_meta_data["stage"]:  # TODO has to be same or different?
+            for pkm_id, hp_value in self.new_meta_data["hp_values"]["players"].items():
+                if pkm_id in self.last_meta_data["hp_values"]["player"].keys():
+                    reward -= ((self.last_meta_data["hp_values"]["player"][pkm_id] -
+                                self.new_meta_data["hp_values"]["players"][pkm_id])
+                               * settings.reward_weights["hp"] * settings.reward_weights["damage_taken"])
         return reward
 
     def _apply_action(self, action):
