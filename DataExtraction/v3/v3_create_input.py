@@ -15,7 +15,7 @@ def create_input_vector(dict, pokemon_embeddings_data: dict, move_embeddings_dat
     if len(dict["enemy"]) < 2:
         for _ in range(2 - len(dict["enemy"])):
             input_vector.extend([0.0] * 9)
-    for pkm in dict["player"][:2]:
+    for pkm in dict["player"][:6]:
         pkm_embedding = pkm_data.get_pokemon_embedding(pkm["dex_nr"], pkm["formIndex"], pokemon_embeddings_data)
         current_hp = pkm["hp"] / pkm["stats"][0]
         meta_data["hp_values"]["player"][pkm["id"]] = pkm["hp"] / pkm["stats"][0]
@@ -28,7 +28,7 @@ def create_input_vector(dict, pokemon_embeddings_data: dict, move_embeddings_dat
             else:
                 moveset.extend([0.0] * 4)
         input_vector.extend(pkm_embedding + [current_hp] + stats + moveset + [is_visible])
-    if len(dict["player"]) < 2:
+    if len(dict["player"]) < 6:
         for _ in range(2 - len(dict["player"])):
             input_vector.extend([0.0] * 32)
     return input_vector, meta_data

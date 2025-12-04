@@ -123,3 +123,7 @@ biomes = ["Abyss", "Ancient Ruins", "Badlands", "Beach", "Cave", "Construction S
           "Grassy Fields", "Graveyard", "Ice Cave", "Island", "Jungle", "Laboratory", "Lake", "Meadow", "Metropolis", "Mountain", "Plains",
           "Power Plant", "Sea", "Seabed", "Slum", "Snowy Forest", "Space", "Swamp", "Tall Grass", "Temple", "Town", "Volcano", "Wasteland", "End"]
 
+reward_weights = {
+    "damage_dealt": 1.0,
+    "damage_taken": 1.25,
+}

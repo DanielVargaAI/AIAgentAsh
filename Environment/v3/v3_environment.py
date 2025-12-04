@@ -5,9 +5,10 @@ import gym
 import keyboard
 from gym import spaces
 import numpy as np
-import DataExtraction.create_input as input_creator
+import DataExtraction.v3.v3_create_input as input_creator
 import json
-from DataExtraction.automated_session_startup import setup_driver
+import DataExtraction.automated_session_startup as session_startup
+import settings
 
 
 class PokeRogueEnv(gym.Env):
@@ -16,14 +17,16 @@ class PokeRogueEnv(gym.Env):
 
         # Define action and observation space
         # They must be gym.spaces objects
-        self.action_space = spaces.Discrete(12)  # TODO Example: 4 attacks * 2 fighters + 2 fighter * 2 targets
+        self.action_space = spaces.MultiDiscrete([4, 2, 4, 2])
         self.observation_space = spaces.Box(low=-100, high=100, shape=(82,), dtype=np.float32)
         self.last_obs = []
         self.new_obs = []
+        self.last_meta_data = dict()
+        self.new_meta_data = dict()
         self.terminated = False
         self.truncated = False
-        self.driver = setup_driver()
-        with open(r"../Embeddings/Pokemon/pokemon_embeddings.json", "r") as f:
+        self.driver = session_startup.setup_driver()
+        with open("../Embeddings/Pokemon/pokemon_embeddings.json", "r") as f:
             self.pokemon_embeddings_data = json.loads(f.read())
         with open(r"../Embeddings/moves/move_embeddings.json", "r") as f:
             self.move_embeddings_data = json.loads(f.read())
@@ -52,12 +55,19 @@ class PokeRogueEnv(gym.Env):
         self.last_obs = self.new_obs
         return self._get_obs(), reward, self.terminated, self.truncated, {}
 
-    def _process_phase(self):
-        pass
-
     def _get_reward(self) -> float:
-        # TODO reward by damage delta
-        reward = self.last_obs[8] + self.last_obs[40] - self.new_obs[20]
+        reward = 0.0
+        # {"phase": dict["phase"]["phaseName"], "stage": dict["metaData"]["waveIndex"],
+        #                  "hp_values": {"enemies": {}, "players": {}}}
+        if self.last_meta_data["stage"] == self.new_meta_data["stage"]:
+            for pkm_id, hp_value in self.last_meta_data["hp_values"]["enemies"].items():
+                reward += ((hp_value - self.new_meta_data["hp_values"]["enemies"].get(pkm_id, 0.0))
+                           * 100 * settings.reward_weights["damage_dealt"])
+            for pkm_id, hp_value in self.last_meta_data["hp_values"]["players"].items():
+                reward -= ((hp_value - self.new_meta_data["hp_values"]["players"].get(pkm_id, 0.0))
+                           * 100 * settings.reward_weights["damage_taken"])
+        # TODO: within 10th wave, new enemies (can i get dmg, while new enemies spawn?)
+        # TODO: 10th wave completed, pokemon healed
         return reward
 
     def _apply_action(self, action):
@@ -73,4 +83,4 @@ class PokeRogueEnv(gym.Env):
 
     def _get_obs(self):
         obs = self.driver.execute_script("return typeof window.__GLOBAL_SCENE_DATA__ === 'function';")
-        self.new_obs = input_creator.create_input_vector(obs, self.pokemon_embeddings_data, self.move_embeddings_data)
+        self.new_obs, self.new_meta_data = input_creator.create_input_vector(obs, self.pokemon_embeddings_data, self.move_embeddings_data)
