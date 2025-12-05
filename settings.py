@@ -119,6 +119,30 @@ phases = {
                     "EggLapsePhase", "EggSummaryPhase", "ModifierRewardPhase", "SelectBiomePhase", "EggHatchPhase", "ScanIvsPhase"],  # phases with more than one option
 }
 
+
+phasesinfo ="""
+ -Check SwitchPhase = nicht switchen
+ -Title Phase = main menu aber für terminated Check und random pokemon wählen / Start runnen aka Tastenkombi für neuen Run
+ -CommandPhase = Battle Single vs Double checken + Move wählen
+ -LearnMovePhase = 1-5 Random ausgeben wobei 5 für "verlernen" steht = ca 5 mal Space oder so
+ -SelectModifierPhase = "Maybe der Shop" = Random 1-3 auswählen 
+> Items müssen trotzdem etwas modelliert werden weil items manchmal angewenedet werden müssen
+
+-Attempt Capture Phase = Nur wenn wir fangen wollen würden
+-Next Encounter Phase = wahrscheinlich skippen oder wird geskippt ( Timer + Space)
+-SwitchPhase = (2 Müssen extra handeln wegen doppelkopf - Smart Liste ausgeben lassen, welches am leben und random auswählen)
+-Trainer Victory Phase = EGAL
+-GameOverPhase = EGAL weil Settings aus
+-SelectStarterPhase = EGAL weil hardcoded
+-Select Target Phase = ???
+-EggLapsePhase = Skip
+-EggSummaryPhase = BACKSPACE
+-Modifier Reward Phase = Wahrscheinlich SKIP
+-SelectBiomePhase = Only with MAP (Do not take map or only first biome always)
+-EggHatchPhase = ???
+-ScanIvsPhase = EGAL weil Settings
+"""
+
 biomes = ["Abyss", "Ancient Ruins", "Badlands", "Beach", "Cave", "Construction Site", "Desert", "Dojo", "Factory", "Fairy Cave", "Forest",
           "Grassy Fields", "Graveyard", "Ice Cave", "Island", "Jungle", "Laboratory", "Lake", "Meadow", "Metropolis", "Mountain", "Plains",
           "Power Plant", "Sea", "Seabed", "Slum", "Snowy Forest", "Space", "Swamp", "Tall Grass", "Temple", "Town", "Volcano", "Wasteland", "End"]
@@ -133,3 +157,4 @@ reward_weights = {
     "wave_done": 10,
     "tenth_wave_done": 20,
 }
+
