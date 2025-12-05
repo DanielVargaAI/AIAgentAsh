@@ -112,11 +112,11 @@ phases = {
                       "BattleEndPhase", "EggLapsePhase", "NewBattlePhase", "NextEncounterPhase", "ToggleDoublePositionPhase", "TurnStartPhase",
                       "MoveEffectPhase", "DamageAnimPhase", "FaintPhase", "StatStageChangePhase", "ShowTrainerPhase", "MessagePhase",
                       "SwitchSummonPhase", "HideAbilityPhase", "ShowAbilityPhase", "ReturnPhase", "TeraPhase", "PostGameOverPhase", "AttemptRunPhase",
-                      "SelectBiomePhase", "PartyHealPhase", "ResetStatusPhase", "SwitchBiomePhase", "NewBiomeEncounterPhase"],  # you can't really do anything here
+                      "SelectBiomePhase", "PartyHealPhase", "ResetStatusPhase", "SwitchBiomePhase", "NewBiomeEncounterPhase", "ShinySparklePhase"],  # you can't really do anything here
     "skip_information": ["MessagePhase", "ExpPhase", "MoneyRewardPhase", "LevelCapPhase"],  # you can only press space to accept, no options
     "complicated": ["CheckSwitchPhase", "TitlePhase", "CommandPhase", "LearnMovePhase", "SelectModifierPhase", "AttemptCapturePhase",
                     "NextEncounterPhase", "SwitchPhase", "TrainerVictoryPhase", "GameOverPhase", "SelectStarterPhase", "SelectTargetPhase",
-                    "EggLapsePhase", "EggSummaryPhase", "ModifierRewardPhase", "SelectBiomePhase", "EggHatchPhase"],  # phases with more than one option
+                    "EggLapsePhase", "EggSummaryPhase", "ModifierRewardPhase", "SelectBiomePhase", "EggHatchPhase", "ScanIvsPhase"],  # phases with more than one option
 }
 
 biomes = ["Abyss", "Ancient Ruins", "Badlands", "Beach", "Cave", "Construction Site", "Desert", "Dojo", "Factory", "Fairy Cave", "Forest",
@@ -124,7 +124,12 @@ biomes = ["Abyss", "Ancient Ruins", "Badlands", "Beach", "Cave", "Construction S
           "Power Plant", "Sea", "Seabed", "Slum", "Snowy Forest", "Space", "Swamp", "Tall Grass", "Temple", "Town", "Volcano", "Wasteland", "End"]
 
 reward_weights = {
+    # hp delta
     "damage_dealt": 1.0,
     "damage_taken": 1.25,
-    "hp": 100,
+    "hp": 100,  # delta is percentage
+    "member_died": -50,
+    # stages
+    "wave_done": 10,
+    "tenth_wave_done": 20,
 }

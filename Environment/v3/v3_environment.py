@@ -71,8 +71,7 @@ class PokeRogueEnv(gym.Env):
 
     def _get_reward(self) -> float:
         reward = 0.0
-        # {"phase": dict["phase"]["phaseName"], "stage": dict["metaData"]["waveIndex"],
-        #                  "hp_values": {"enemies": {}, "players": {}}}
+        # hp delta
         for pkm_id, hp_value in self.new_meta_data["hp_values"]["enemies"].items():
             if pkm_id in self.last_meta_data["hp_values"]["enemies"].keys():
                 reward += ((self.last_meta_data["hp_values"]["enemies"][pkm_id] -
@@ -81,9 +80,18 @@ class PokeRogueEnv(gym.Env):
         if self.new_meta_data["stage"] % 10 != 0 or self.new_meta_data["stage"] == self.last_meta_data["stage"]:  # TODO has to be same or different?
             for pkm_id, hp_value in self.new_meta_data["hp_values"]["players"].items():
                 if pkm_id in self.last_meta_data["hp_values"]["player"].keys():
-                    reward -= ((self.last_meta_data["hp_values"]["player"][pkm_id] -
-                                self.new_meta_data["hp_values"]["players"][pkm_id])
-                               * settings.reward_weights["hp"] * settings.reward_weights["damage_taken"])
+                    dmg_delta = (self.last_meta_data["hp_values"]["player"][pkm_id] -
+                                 self.new_meta_data["hp_values"]["players"][pkm_id])
+                    reward -= (dmg_delta * settings.reward_weights["hp"] * settings.reward_weights["damage_taken"])
+                    if self.new_meta_data["hp_values"]["players"][pkm_id] <= 0.0 <= dmg_delta:
+                        reward += settings.reward_weights["member_died"]
+
+        # wave progress
+        if self.new_meta_data["stage"] != self.last_meta_data["stage"]:
+            if self.new_meta_data["stage"] % 10 != 0:
+                reward += settings.reward_weights["wave_done"]
+            else:
+                reward += settings.reward_weights["tenth_wave_done"]
         return reward
 
     def _apply_action(self, action):

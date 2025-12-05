@@ -16,6 +16,15 @@ export function initGlobalScene(scene: BattleScene): void {
       moveset: p.moveset?.map(m => ({
         id: m.moveId,
       })),
+      level: p.level,
+      luck: p.luck,
+      isTerastallized: p.isTerastallized,
+      nature: p.nature,
+      passive: p.passive,
+      abilityIndex: p.abilityIndex,
+      gender: p.gender,
+      ivs: p.ivs,
+      teraType: p.teraType,
     };
   }
 
@@ -32,6 +41,6 @@ export function initGlobalScene(scene: BattleScene): void {
   globalThis.__GLOBAL_SCENE_DATA__ = () => ({
     player: scene.party.map(serializePartyPokemon),
     enemy: scene.currentBattle.enemyParty.map(serializeEnemyPokemon)
-    //phase: scene.phaseManager
+    phase: scene.phaseManager.currentPhase.phaseName
   });
 }
