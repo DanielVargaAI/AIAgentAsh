@@ -14,6 +14,11 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import WebDriverException
 
+import button_combinations
+from DataExtraction.automated_session_startup import setup_driver
+import settings
+import phase_handler
+
 import sys
 import os
 
@@ -30,8 +35,6 @@ class PokeRogueEnv(gym.Env):
     def __init__(self):
         super(PokeRogueEnv, self).__init__()
 
-
-        #self.action_space = spaces.Discrete(12)  # TODO Example: 4 attacks * 2 fighters + 2 fighter * 2 targets
         # --- 1. Define Action Space (Multi-Head) ---
         # [P1 Move (0-3), P1 Target (0-1), P2 Move (0-3), P2 Target (0-1)]
         self.action_space = spaces.MultiDiscrete([4, 2, 4, 2])
@@ -40,13 +43,13 @@ class PokeRogueEnv(gym.Env):
         self.observation_space = spaces.Box(low=-100, high=100, shape=(82,), dtype=np.float32)
         self.last_obs = []
         self.new_obs = []
+        self.last_meta_data = dict()
+        self.new_meta_data = dict()
         self.terminated = False
         self.truncated = False
-        self.driver = None
-        self.PenaltyFactor = 1.5 # Penalty for damage taken
-        self.last_reward = 0.0 # Store reward for debugging display
-        # If True, try to auto-handle phases using the phase manager
-        self.auto_handle_phases = True
+        self.driver = setup_driver()
+        self.reward = 0.0 # Store reward for debugging display
+        self.whose_turn = 0  # index of pokemon who has to select a move
 
         with open("Embeddings/Pokemon/pokemon_embeddings.json", "r") as f:
             self.pokemon_embeddings_data = json.loads(f.read())
@@ -55,128 +58,54 @@ class PokeRogueEnv(gym.Env):
 
 
         # --- 4. Launch & Inject (Startup) ---
-        self._setup_driver()
-
-        
-
-    def _setup_driver(self):
-        """Launches browser and injects save/settings."""
-        print("--- Launching PokeRogue Environment ---")
-        options = Options()
-        # options.add_argument("--headless") # Uncomment if you don't want UI
-        self.driver = webdriver.Firefox(options=options)
-        self.driver.get("http://localhost:8000")
-
-        # Inject Settings
-        settings = {"PLAYER_GENDER": 0, "GAME_SPEED": 5, "MASTER_VOLUME": 0, "TUTORIALS": 0, "ENABLE_RETRIES": 1, "SHOW_LEVEL_UP_STATS": 0, "EXP_GAINS_SPEED": 5, "HP_BAR_SPEED": 5, "gameVersion": "1.11.3"}
-        self.driver.execute_script(f"localStorage.setItem('settings', '{json.dumps(settings)}');")
-        self.driver.refresh()
-        time.sleep(1)
-
-        # Inject Save Data
-        try:
-            with open("DataExtraction/copied_save_data.txt", "r") as f:
-                file_content = f.read()
-            self.driver.execute_script(f"localStorage.setItem('data_Guest', '{file_content}');")
-            print("Save data injected.")
-        except FileNotFoundError:
-            print("Warning: copied_save_data.txt not found. Starting clean.")
-
-        self.driver.refresh()
-        
-        # Wait for Game Load
-        print("Waiting for game to load...")
-        time.sleep(5) # Allow assets to load
-        WebDriverWait(self.driver, timeout=20).until(
-            lambda d: d.execute_script("return typeof window.__GLOBAL_SCENE_DATA__ === 'function';")
-        )
-        print("Game Loaded & Ready.")
-
-        input("Press Enter to continue when in Battle...")
+        # self._setup_driver()
 
         self.reset()
 
     def reset(self, seed=None, options=None):
         self._get_obs()
         self.last_obs = self.new_obs
+        self.reward = 0.0
         self.terminated = False
         self.truncated = False
         return self.new_obs, {}
 
-    #def step(self, action):
-    #    self._apply_action(action)
-    #    while True:
-    #        if keyboard.is_pressed("p"):
-    #            self.truncated = True
-    #            break
-    #        elif keyboard.is_pressed("q"):
-    #            self.terminated = True
-    #            break
-    #        elif keyboard.is_pressed("o"):
-    #            break
-    #    self._get_obs()
-    #    reward = self._get_reward()
-    #    self.last_obs = self.new_obs
-    #    return self._get_obs(), reward, self.terminated, self.truncated, {}
-    
-
     def step(self, action):
-        # 1. TELL USER WHAT TO DO
         self._apply_action(action)
-        
-        # 2. PAUSE LOOP (Wait for 'O')
-        # We use a loop that sleeps to prevent CPU spam and waits for key release
-        while True:
-            if keyboard.is_pressed("o"):
-                # Wait until the user LETS GO of the key (Debounce)
-                while keyboard.is_pressed("o"): 
-                    time.sleep(0.1)
-                break
-            elif keyboard.is_pressed("q"):
-                self.terminated = True
-                break
-            # Sleep slightly to prevent freezing the PC
-            time.sleep(0.1)
-
-        # 3. GET OBS & REWARD
         self._get_obs()
-        self._check_terminated()
-        reward = self._get_reward()
+        self.terminated = phase_handler.phase_handler(self.new_meta_data, self.driver, self.pokemon_embeddings_data,
+                                                 self.move_embeddings_data)
+        self.reward = self._get_reward()
         self.last_obs = self.new_obs
+        self.last_meta_data = self.new_meta_data
         
-        return self.new_obs, reward, self.terminated, self.truncated, {}
+        return self.new_obs, self.reward, self.terminated, self.truncated, self._get_info()
 
     def _get_reward(self) -> float:
-        """
-        Calculates reward based on HP delta.
-        Enemies: 8, 17
-        Players: 26, 58
-        """
-        # Extract HPs
-        old_enemy_hp = self.last_obs[8] + self.last_obs[17]
-        print(f"Old Enemy HP: {old_enemy_hp}")
-        new_enemy_hp = self.new_obs[8] + self.new_obs[17]
-        print(f"New Enemy HP: {new_enemy_hp}")
-        
-        old_player_hp = self.last_obs[26] + self.last_obs[58]
-        print(f"Old Player HP: {old_player_hp}")
-        new_player_hp = self.new_obs[26] + self.new_obs[58]
-        print(f"New Player HP: {new_player_hp}")
+        reward = 0.0
+        # hp delta
+        for pkm_id, hp_value in self.new_meta_data["hp_values"]["enemies"].items():
+            if pkm_id in self.last_meta_data["hp_values"]["enemies"].keys():
+                reward += ((self.last_meta_data["hp_values"]["enemies"][pkm_id] -
+                            self.new_meta_data["hp_values"]["enemies"][pkm_id])
+                           * settings.reward_weights["hp"] * settings.reward_weights["damage_dealt"])
+        if self.new_meta_data["stage"] % 10 != 0 or self.new_meta_data["stage"] == self.last_meta_data[
+            "stage"]:  # TODO has to be same or different?
+            for pkm_id, hp_value in self.new_meta_data["hp_values"]["players"].items():
+                if pkm_id in self.last_meta_data["hp_values"]["player"].keys():
+                    dmg_delta = (self.last_meta_data["hp_values"]["player"][pkm_id] -
+                                 self.new_meta_data["hp_values"]["players"][pkm_id])
+                    reward -= (dmg_delta * settings.reward_weights["hp"] * settings.reward_weights["damage_taken"])
+                    if self.new_meta_data["hp_values"]["players"][pkm_id] <= 0.0 <= dmg_delta:
+                        reward += settings.reward_weights["member_died"]
 
-        # Reward: Damage Dealt - Damage Taken
-        damage_dealt = old_enemy_hp - new_enemy_hp
-        damage_taken = old_player_hp - new_player_hp
-
-        # Simple Reward
-        reward = damage_dealt - damage_taken * self.PenaltyFactor
-        print(f"Reward Calculation: Damage Dealt = {damage_dealt}, Damage Taken = {damage_taken}, Reward = {reward}")
+        # wave progress
+        if self.new_meta_data["stage"] != self.last_meta_data["stage"]:
+            if self.new_meta_data["stage"] % 10 != 0:
+                reward += settings.reward_weights["wave_done"]
+            else:
+                reward += settings.reward_weights["tenth_wave_done"]
         return reward
-
-    #def _apply_action(self, action):
-    #    action = [1] * 12
-    #    print(f"Pokemon 1: use action {action[0:4].index(1)} on target {action[8:10].index(1)} - Pokemon 2: use action {action[4:8].index(1)} "
-    #          f"on target {action[10:12].index(1)}")
-        
         
     def _apply_action(self, action):
         """
@@ -189,159 +118,26 @@ class PokeRogueEnv(gym.Env):
         # Decode targets for readability
         t1_str = "Right Enemy" if p1_target == 1 else "Left Enemy"
         t2_str = "Right Enemy" if p2_target == 1 else "Left Enemy"
-
-        # --- DEBUG INFO ---
-        # Get raw HP for display (Player 26+58, Enemy 8+17)
-        p_hp = (self.last_obs[26] + self.last_obs[58]) * 100
-        e_hp = (self.last_obs[8] + self.last_obs[17]) * 100
         
         print("\n" + "="*40)
         print(f"📊 DEBUG STATE:")
-        print(f"   Reward from LAST turn: {self.last_reward:.4f}")
-        print(f"   Est. HP: Player {p_hp:.1f}% | Enemy {e_hp:.1f}%")
+        print(f"   Reward from LAST turn: {self.reward:.4f}")
         print("-" * 40)
 
         print("\n" + "="*40)
         print(f"   Pokemon 1: Use MOVE {p1_move + 1} on {t1_str}")
         print(f"   Pokemon 2: Use MOVE {p2_move + 1} on {t2_str}")
         print("="*40)
-        print(">>> 1. Execute moves in browser.")
-        print(">>> 2. Wait for animations.")
-        print(">>> 3. Press 'O' to continue.")
+        print(">>> Executing moves in browser.")
 
-        # If enabled, try to auto-handle the current game phase
-        if getattr(self, "auto_handle_phases", False):
-            try:
-                self._auto_handle_phase()
-            except Exception as e:
-                print(f"Auto phase handler error: {e}")
-
-    def _get_stage_name(self) -> str:
-        """Obtain the current phase name from `__GLOBAL_SCENE_DATA__()`.
-
-        The game's `GlobalScene.ts` exposes `phase` (phaseName) and
-        the serialized data under `__GLOBAL_SCENE_DATA__()`. Prefer the
-        `phase` key which is provided by the game.
-        """
-        try:
-            raw = self.driver.execute_script("return window.__GLOBAL_SCENE_DATA__();")
-            if isinstance(raw, dict):
-                phase = raw.get("phase") or raw.get("phaseName") or raw.get("stage")
-                if isinstance(phase, str):
-                    return phase
-        except Exception:
-            pass
-        return ""
-
-    def _auto_handle_phase(self):
-        """Get the current stage/phase name, resolve an action and execute key presses.
-
-        This uses `resolve_phase_action` from `phaseManagerSkippy` and `press_button` to
-        send input to the browser. Most skip/accept actions are mapped to `SPACE`.
-        """
-        # Obtain the serialized scene data and build a minimal state for the resolver
-        try:
-            raw = self.driver.execute_script("return window.__GLOBAL_SCENE_DATA__();")
-        except Exception:
-            raw = None
-
-        if not isinstance(raw, dict):
-            return
-
-        phase_name = raw.get("phase") or raw.get("phaseName") or ""
-        print(f"Detected phase/stage: {phase_name}")
-
-        # Build a small `state` object for the resolver from available info
-        # - available_moves: first party Pokemon moves (ids list)
-        # - party_status: list of booleans (hp>0)
-        # - targets: enemy identifiers
-        state = {}
-        try:
-            player = raw.get("player") or []
-            enemy = raw.get("enemy") or []
-
-            # available_moves: collect moveset ids for first party member if present
-            if player and isinstance(player, list):
-                first = player[0]
-                moveset = []
-                if isinstance(first, dict) and "moveset" in first and first["moveset"]:
-                    for m in first["moveset"]:
-                        # m might be {id: ...}
-                        moveset.append(m.get("id") if isinstance(m, dict) else m)
-                state["available_moves"] = moveset
-
-            # party_status: True if hp > 0
-            party_status = []
-            for p in player:
-                try:
-                    hp = float(p.get("hp", 0))
-                except Exception:
-                    hp = 0.0
-                party_status.append(hp > 0)
-            state["party_status"] = party_status
-
-            # targets: use enemy dex_nr list
-            targets = []
-            for e in enemy:
-                tid = e.get("dex_nr") if isinstance(e, dict) else None
-                targets.append(tid)
-            state["targets"] = targets
-        except Exception:
-            # If state building fails, keep state empty
-            state = {}
-
-        # Resolve what to do for this phase, pass settings if available
-        settings = {"want_capture": False, "use_map": False}
-        result = resolve_phase_action(phase_name, settings=settings, state=state)
-        print(f"Resolved action: {result}")
-
-        act = result.get("action")
-        if act in ("skip", "inspect_then_skip", "select_first_biome", "use_map_then_select_first", "attempt_capture", "choose_move", "learn_move", "select_modifier", "select_target"):
-            # Most of these can be handled by pressing SPACE
-            press_button(self.driver, "SPACE")
-            time.sleep(0.12)
-
-        elif act == "press_start_combo":
-            combo = result.get("combo", [])
-            for key in combo:
-                # Expect key like 'ENTER'
-                try:
-                    press_button(self.driver, key)
-                    time.sleep(0.08)
-                except Exception:
-                    # fallback to SPACE
-                    press_button(self.driver, "SPACE")
-                    time.sleep(0.08)
-
-        elif act == "forget_move":
-            presses = int(result.get("presses", 5))
-            for _ in range(presses):
-                press_button(self.driver, "SPACE")
-                time.sleep(0.08)
-
-        elif act == "switch_to":
-            # Basic attempt: open switch menu (SPACE), then press SPACE repeatedly to select index
-            press_button(self.driver, "SPACE")
-            time.sleep(0.12)
-            idx = int(result.get("index", 0))
-            for _ in range(idx):
-                press_button(self.driver, "DOWN")
-                time.sleep(0.08)
-            press_button(self.driver, "SPACE")
-            time.sleep(0.08)
-
-        elif act == "press_backspace":
-            press_button(self.driver, "BACKSPACE")
-            time.sleep(0.08)
-
-        elif act == "no_switch" or act == "no_switch_available" or act == "ignore":
-            # Do nothing
-            pass
-
-        else:
-            # Unknown action: default to SPACE
-            press_button(self.driver, "SPACE")
-            time.sleep(0.08)
+        move = p1_move # or p2_move
+        target = p1_target # or p2_target
+        for button in ["LEFT", "UP", "SPACE"]:
+            press_button(self.driver, button)
+        for button in button_combinations.SELECT_MOVE[move]:
+            press_button(self.driver, button)
+        for button in button_combinations.SELECT_TARGET[target]:
+            press_button(self.driver, button)
 
     def _check_truncated(self) -> bool:
         pass
@@ -349,25 +145,32 @@ class PokeRogueEnv(gym.Env):
     def _check_terminated(self) -> bool:
         pass
 
-    def _get_obs(self):
-            try:
-                # Safely try to execute the script
-                raw_data = self.driver.execute_script("return window.__GLOBAL_SCENE_DATA__();")
-                
-                # If the script returned null or valid data wasn't found
-                if not isinstance(raw_data, dict) or 'enemy' not in raw_data:
-                    return np.zeros(82, dtype=np.float32)
+    def _get_info(self):
+        info = dict()
+        info["reward"] = self.reward
+        info["stage"] = self.new_meta_data["stage"]
 
-                self.new_obs = input_creator.create_input_vector(raw_data, self.pokemon_embeddings_data, self.move_embeddings_data)
-                self.new_obs = np.array(self.new_obs, dtype=np.float32)
-                
-            except WebDriverException as e:
-                # Catch "scene.currentBattle is null" errors silently
-                self.new_obs = np.zeros(82, dtype=np.float32)
-                
-            except Exception as e:
-                # Catch other Python errors
-                print(f" Warning in _get_obs: {e}")
-                self.new_obs = np.zeros(82, dtype=np.float32)
-                
-            return self.new_obs
+    def _get_obs(self):
+        try:
+            # Safely try to execute the script
+            raw_data = self.driver.execute_script("return window.__GLOBAL_SCENE_DATA__();")
+
+            # If the script returned null or valid data wasn't found
+            if not isinstance(raw_data, dict) or 'enemy' not in raw_data:
+                return np.zeros(82, dtype=np.float32)
+            self.new_obs, self.new_meta_data = input_creator.create_input_vector(raw_data,
+                                                                                 self.pokemon_embeddings_data,
+                                                                                 self.move_embeddings_data)
+
+            self.new_obs = np.array(self.new_obs, dtype=np.float32)
+
+        except WebDriverException as e:
+            # Catch "scene.currentBattle is null" errors silently
+            self.new_obs = np.zeros(82, dtype=np.float32)
+
+        except Exception as e:
+            # Catch other Python errors
+            print(f" Warning in _get_obs: {e}")
+            self.new_obs = np.zeros(82, dtype=np.float32)
+
+        return self.new_obs
