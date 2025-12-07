@@ -12,6 +12,7 @@ export function initGlobalScene(scene: BattleScene): void {
     dex_nr: p.species?.speciesId,
     hp: p.hp,
     stats: p.stats,
+    id: p.id,
     visible: p._visible,
     moveset: p.moveset?.map(m => ({
       id: m.moveId,
@@ -25,14 +26,28 @@ export function initGlobalScene(scene: BattleScene): void {
     dex_nr: p.species?.speciesId,
     hp: p.hp,
     stats: p.stats,
+    id: p.id,
   };
+}
+  function getPhaseData() {
+  return {
+    phaseName: scene.phaseManager.currentPhase.phaseName,
+
+  }
+  }
+function getMetaData() {
+  return {
+    waveIndex: scene.currentBattle.waveIndex,
+    isDoubleFight: scene.currentBattle.double,
+  }
 }
 
 
 globalThis.__GLOBAL_SCENE_DATA__ = () => ({
   player: scene.party.map(serializePartyPokemon),
   enemy: scene.currentBattle.enemyParty.map(serializeEnemyPokemon),
-  phase: scene.phaseManager.currentPhase.phaseName,
+  phase: getPhaseData,
+  metaData: getMetaData,
 
   // only select typeoptions when phase = SelectModifierPhase
 

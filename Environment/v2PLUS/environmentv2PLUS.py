@@ -73,9 +73,10 @@ class PokeRogueEnv(gym.Env):
     def step(self, action):
         self._apply_action(action)
         self._get_obs()
+        self.reward = self._get_reward()
         self.terminated = phase_handler.phase_handler(self.new_meta_data, self.driver, self.pokemon_embeddings_data,
                                                  self.move_embeddings_data)
-        self.reward = self._get_reward()
+        self._get_obs()
         self.last_obs = self.new_obs
         self.last_meta_data = self.new_meta_data
         
@@ -89,8 +90,7 @@ class PokeRogueEnv(gym.Env):
                 reward += ((self.last_meta_data["hp_values"]["enemies"][pkm_id] -
                             self.new_meta_data["hp_values"]["enemies"][pkm_id])
                            * settings.reward_weights["hp"] * settings.reward_weights["damage_dealt"])
-        if self.new_meta_data["stage"] % 10 != 0 or self.new_meta_data["stage"] == self.last_meta_data[
-            "stage"]:  # TODO has to be same or different?
+        if self.new_meta_data["stage"] % 10 != 0 or self.new_meta_data["stage"] == self.last_meta_data["stage"]:
             for pkm_id, hp_value in self.new_meta_data["hp_values"]["players"].items():
                 if pkm_id in self.last_meta_data["hp_values"]["player"].keys():
                     dmg_delta = (self.last_meta_data["hp_values"]["player"][pkm_id] -
@@ -130,14 +130,22 @@ class PokeRogueEnv(gym.Env):
         print("="*40)
         print(">>> Executing moves in browser.")
 
-        move = p1_move # or p2_move
-        target = p1_target # or p2_target
+        # Pokemon 1
         for button in ["LEFT", "UP", "SPACE"]:
             press_button(self.driver, button)
-        for button in button_combinations.SELECT_MOVE[move]:
+        for button in button_combinations.SELECT_MOVE[p1_move]:
             press_button(self.driver, button)
-        for button in button_combinations.SELECT_TARGET[target]:
+        for button in button_combinations.SELECT_TARGET[p1_target]:
             press_button(self.driver, button)
+
+        # Pokemon 2, if we are in a double fight and the second Pokemon is alive
+        if self.new_meta_data["is_double_fight"] and list(self.new_meta_data["hp_values"].values())[0] > 0.0:
+            for button in ["LEFT", "UP", "SPACE"]:
+                press_button(self.driver, button)
+            for button in button_combinations.SELECT_MOVE[p2_move]:
+                press_button(self.driver, button)
+            for button in button_combinations.SELECT_TARGET[p2_target]:
+                press_button(self.driver, button)
 
     def _check_truncated(self) -> bool:
         pass
