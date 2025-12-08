@@ -66,7 +66,7 @@ class PokeRogueEnv(gym.Env):
 
         self._get_obs()
         _, reward_meta, reward_obs = phase_handler.phase_handler(self.new_meta_data, self.new_obs, self.driver, self.pokemon_embeddings_data,
-                                                                 self.move_embeddings_data, self.new_meta_data, self.new_obs)
+                                                                 self.move_embeddings_data, self.new_meta_data, self.new_obs, ongoing_save=False)
 
         self.reset()
 

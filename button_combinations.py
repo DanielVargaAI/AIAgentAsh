@@ -1,6 +1,6 @@
 # start new endless run on save_slot 5, only works, if there is no other save (no continue button in the main menu)
-NEW_SAVE = ["SPACE", "DOWN", "DOWN", "DOWN", "SPACE", "LEFT", "SPACE", "SPACE", "SPACE", "SPACE", "SPACE",
-            "SPACE", "ENTER", "SPACE", "UP", "SPACE"]
+FIRST_SAVE = ["SPACE", "DOWN", "DOWN", "DOWN", "SPACE", "LEFT", "SPACE", "SPACE", "SPACE", "SPACE", "SPACE","SPACE", "ENTER", "SPACE", "UP", "SPACE"]
+ONGOING_SAVE = ["SPACE", "DOWN", "DOWN", "DOWN", "SPACE", "SPACE", "SPACE", "SPACE", "SPACE", "SPACE", "SPACE", "ENTER", "SPACE", "UP", "SPACE"]
 
 SELECT_MOVE = {
     0: ["LEFT", "UP", "SPACE"],

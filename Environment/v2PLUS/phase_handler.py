@@ -11,11 +11,11 @@ import time
 
 # Configure logging
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 
 # Create console handler with a higher log level
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.WARNING)
 
 # Create formatter and add it to the handler
 formatter = logging.Formatter('[%(asctime)s] %(name)s - %(levelname)s - %(message)s')
@@ -26,7 +26,7 @@ if not logger.handlers:
     logger.addHandler(ch)
 
 
-def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter=0, terminated=False, reward_meta=dict(), reward_obs=list()):
+def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter=0, terminated=False, reward_meta=dict(), reward_obs=list(), ongoing_save=True):
     """
     Handles the different phases that might occur during playthrough
     :param phase_counter: how often we have been in this phase in a row
@@ -39,11 +39,18 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
     """
     logger.debug(f"phase_handler called - Phase: {meta_data.get('phaseName', 'UNKNOWN')}, Counter: {phase_counter}, Terminated: {terminated}")
 
+    print(meta_data["phaseName"])
+
     if meta_data["phaseName"] == "TitlePhase":
         logger.info("Detected TitlePhase - Starting new run")
-        for button_name in button_combinations.NEW_SAVE:
-            logger.debug(f"Pressing button: {button_name}")
-            press_button(driver, button_name)
+        if ongoing_save:
+            for button_name in button_combinations.ONGOING_SAVE:
+                logger.debug(f"Pressing button: {button_name}")
+                press_button(driver, button_name)
+        else:
+            for button_name in button_combinations.FIRST_SAVE:
+                logger.debug(f"Pressing button: {button_name}")
+                press_button(driver, button_name)
         terminated = True
         reward_meta = meta_data
         reward_obs = obs
@@ -75,14 +82,18 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
         logger.info("Detected SelectModifierPhase - Selecting modifier/item")
         if phase_counter <= 10:
             selected_item, weight = select_item(meta_data)
-            logger.info(f"Selected item index: {selected_item} with weight: {weight}")
-            logger.debug(f"Pressing RIGHT {selected_item} times to navigate to item")
-            for i in range(selected_item):
-                logger.debug(f"RIGHT press {i + 1}/{selected_item}")
-                press_button(driver, "RIGHT")
-            logger.debug("Pressing SPACE to confirm selection")
-            press_button(driver, "SPACE")
-            logger.info("SelectModifierPhase completed")
+            if weight == 0:
+                press_button(driver, "DOWN")
+                press_button(driver, "SPACE")
+            else:
+                logger.info(f"Selected item index: {selected_item} with weight: {weight}")
+                logger.debug(f"Pressing RIGHT {selected_item} times to navigate to item")
+                for i in range(selected_item):
+                    logger.debug(f"RIGHT press {i + 1}/{selected_item}")
+                    press_button(driver, "RIGHT")
+                logger.debug("Pressing SPACE to confirm selection")
+                press_button(driver, "SPACE")
+                logger.info("SelectModifierPhase completed")
         else:
             while True:
                 if keyboard.is_pressed("o"):
@@ -183,13 +194,13 @@ def select_item(meta_data):
     try:
         item_weights = []
         for item in meta_data["shop_items"]:
-            if item.id in settings.item_weights.keys():
-                item_weights.append(settings.item_weights[item.id])
-            elif item.id.find("BALL") >= 0:
+            if item["id"] in settings.item_weights["id"].keys():
+                item_weights.append(settings.item_weights["id"][item["id"]])
+            elif item["id"].find("BALL") >= 0:
                 item_weights.append(5)
             else:
                 item_weights.append(0)
-                print(f"Unknown Item ID: {item.id}")
+                print(f"Unknown Item ID: {item['id']}")
         if not item_weights:
             logger.warning("No item weights calculated - using default selection")
             logger.debug("Returning default item (index 0, weight 0)")
