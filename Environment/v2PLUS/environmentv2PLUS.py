@@ -36,6 +36,7 @@ except ModuleNotFoundError as e:
     print(f"Added to sys.path: {os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))}")
     raise
 
+
 class PokeRogueEnv(gym.Env):
     def __init__(self):
         super(PokeRogueEnv, self).__init__()
@@ -53,8 +54,7 @@ class PokeRogueEnv(gym.Env):
         self.terminated = False
         self.truncated = False
         self.driver = setup_driver()
-        self.reward = 0.0 # Store reward for debugging display
-        self.whose_turn = 0  # index of pokemon who has to select a move
+        self.reward = 0.0  # Store reward for debugging display
 
         with open("Embeddings/Pokemon/pokemon_embeddings.json", "r") as f:
             self.pokemon_embeddings_data = json.loads(f.read())
@@ -63,9 +63,7 @@ class PokeRogueEnv(gym.Env):
             self.move_embeddings_data = json.loads(f.read())
             print(f"Loaded {len(self.move_embeddings_data)} Move embeddings.")
 
-
-        # --- 4. Launch & Inject (Startup) ---
-        # self._setup_driver()
+        phase_handler.phase_handler(self.new_meta_data, self.driver, self.pokemon_embeddings_data, self.move_embeddings_data)
 
         self.reset()
 
@@ -81,8 +79,7 @@ class PokeRogueEnv(gym.Env):
         self._apply_action(action)
         self._get_obs()
         self.reward = self._get_reward()
-        self.terminated = phase_handler.phase_handler(self.new_meta_data, self.driver, self.pokemon_embeddings_data,
-                                                 self.move_embeddings_data)
+        self.terminated = phase_handler.phase_handler(self.new_meta_data, self.driver, self.pokemon_embeddings_data, self.move_embeddings_data)
         self._get_obs()
         self.last_obs = self.new_obs
         self.last_meta_data = self.new_meta_data
@@ -97,6 +94,9 @@ class PokeRogueEnv(gym.Env):
                 reward += ((self.last_meta_data["hp_values"]["enemies"][pkm_id] -
                             self.new_meta_data["hp_values"]["enemies"][pkm_id])
                            * settings.reward_weights["hp"] * settings.reward_weights["damage_dealt"])
+        for pkm_id, hp_value in self.last_meta_data["hp_values"]["enemies"].items():
+            if pkm_id not in self.new_meta_data["hp_values"]["enemies"].keys():
+                reward += hp_value * settings.reward_weights["hp"] * settings.reward_weights["damage_dealt"]
         if self.new_meta_data["stage"] % 10 != 0 or self.new_meta_data["stage"] == self.last_meta_data["stage"]:
             for pkm_id, hp_value in self.new_meta_data["hp_values"]["players"].items():
                 if pkm_id in self.last_meta_data["hp_values"]["player"].keys():

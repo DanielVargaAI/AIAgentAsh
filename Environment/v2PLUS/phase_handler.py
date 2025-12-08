@@ -55,15 +55,15 @@ def phase_handler(meta_data, driver, pokemon_embeddings_data, move_embeddings_da
     elif meta_data["phaseName"] == "LearnMovePhase":
         logger.info("Detected LearnMovePhase - Randomly selecting move to learn/forget")
         logger.debug("Pressing SPACE 4 times to cycle through moves")
-        for _ in range(4):  # TODO: check amount of skips
+        for _ in range(4):
             press_button(driver, "SPACE")
         forget_move = random.randint(0, 4)
         logger.debug(f"Randomly selected move index: {forget_move}")
-        for move in range(forget_move):  # TODO: check starting position, might be the new move at the bottom
+        for move in range(forget_move):
             logger.debug(f"Pressing DOWN for move selection {move + 1}/{forget_move}")
-            press_button(driver, "DOWN")
+            press_button(driver, "UP")
         logger.debug("Pressing SPACE 4 times to confirm move")
-        for _ in range(4):  # TODO: check amount of skips
+        for _ in range(5):
             press_button(driver, "SPACE")
         logger.info("LearnMovePhase completed")
 
@@ -97,9 +97,12 @@ def phase_handler(meta_data, driver, pokemon_embeddings_data, move_embeddings_da
             else:
                 new_pokemon_ind = 1
                 logger.info(f"Switching to Pokemon at index {new_pokemon_ind} (backup Pokemon)")
+            for _ in range(new_pokemon_ind):
+                press_button(driver, "DOWN")
+            press_button(driver, "SPACE")
+            press_button(driver, "SPACE")
         except (KeyError, ValueError) as e:
             logger.error(f"Error in SwitchPhase: {e}")
-        # TODO: find out button presses for selecting the right pokemon
 
     elif meta_data["phaseName"] == "EggSummaryPhase":
         logger.info("Detected EggSummaryPhase - Closing egg summary")
