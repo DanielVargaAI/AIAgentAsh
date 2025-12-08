@@ -14,22 +14,27 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import WebDriverException
 
-import button_combinations
-from DataExtraction.automated_session_startup import setup_driver
-import settings
-import phase_handler
-
 import sys
 import os
 
-# Add the parent directory (AIAgentAsh) to the system path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Add the AIAgentAsh root directory to the system path (go up 2 levels: v2PLUS -> Environment -> AIAgentAsh)
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
-
-import DataExtraction.create_input as input_creator
-# Phase manager and input sender
-from Environment.v2PLUS.phaseManagerSkippy import resolve_phase_action
-from Environment.send_key_inputs import press_button
+# Import modules from AIAgentAsh package
+try:
+    from DataExtraction.automated_session_startup import setup_driver
+    import settings
+    import button_combinations
+    import DataExtraction.create_input as input_creator
+    from Environment.send_key_inputs import press_button
+    from . import phase_handler
+except ModuleNotFoundError as e:
+    # Fallback: try importing with relative path adjustment
+    print(f"Warning: Import error detected: {e}")
+    print(f"Current working directory: {os.getcwd()}")
+    print(f"Script location: {os.path.dirname(__file__)}")
+    print(f"Added to sys.path: {os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))}")
+    raise
 
 class PokeRogueEnv(gym.Env):
     def __init__(self):
