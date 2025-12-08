@@ -64,23 +64,28 @@ class PokeRogueEnv(gym.Env):
             print(f"Loaded {len(self.move_embeddings_data)} Move embeddings.")
 
         self._get_obs()
-        phase_handler.phase_handler(self.new_meta_data, self.driver, self.pokemon_embeddings_data, self.move_embeddings_data)
+        phase_handler.phase_handler(self.new_meta_data, self.new_obs, self.driver, self.pokemon_embeddings_data, self.move_embeddings_data)
 
         self.reset()
 
     def reset(self, seed=None, options=None):
         self._get_obs()
         self.last_obs = self.new_obs
+        self.last_meta_data = self.new_meta_data
         self.reward = 0.0
         self.terminated = False
         self.truncated = False
+        # return self.new_obs, self._get_info()
         return self.new_obs, {}
 
     def step(self, action):
         self._apply_action(action)
         self._get_obs()
+        time.sleep(2)
+        print(self.new_meta_data)
         self.terminated, reward_meta, reward_obs = phase_handler.phase_handler(self.new_meta_data, self.new_obs, self.driver,
-                                                                               self.pokemon_embeddings_data, self.move_embeddings_data)
+                                                                               self.pokemon_embeddings_data, self.move_embeddings_data,
+                                                                               reward_meta=self.new_meta_data, reward_obs=self.new_obs)
 
         self.new_meta_data = reward_meta
         self.new_obs = reward_obs
@@ -88,11 +93,13 @@ class PokeRogueEnv(gym.Env):
         self.last_obs = reward_obs
         self.last_meta_data = reward_meta
 
-        return self.new_obs, self.reward, self.terminated, self.truncated, self._get_info()
+        # return self.new_obs, self.reward, self.terminated, self.truncated, self._get_info()
+        return self.new_obs, self.reward, self.terminated, self.truncated, {}
 
     def _get_reward(self) -> float:
         reward = 0.0
         # hp delta
+        print(self.last_meta_data, self.new_meta_data)
         for pkm_id, hp_value in self.new_meta_data["hp_values"]["enemies"].items():
             if pkm_id in self.last_meta_data["hp_values"]["enemies"].keys():
                 reward += ((self.last_meta_data["hp_values"]["enemies"][pkm_id] -
@@ -103,8 +110,8 @@ class PokeRogueEnv(gym.Env):
                 reward += hp_value * settings.reward_weights["hp"] * settings.reward_weights["damage_dealt"]
         if self.new_meta_data["stage"] % 10 != 0 or self.new_meta_data["stage"] == self.last_meta_data["stage"]:
             for pkm_id, hp_value in self.new_meta_data["hp_values"]["players"].items():
-                if pkm_id in self.last_meta_data["hp_values"]["player"].keys():
-                    dmg_delta = (self.last_meta_data["hp_values"]["player"][pkm_id] -
+                if pkm_id in self.last_meta_data["hp_values"]["players"].keys():
+                    dmg_delta = (self.last_meta_data["hp_values"]["players"][pkm_id] -
                                  self.new_meta_data["hp_values"]["players"][pkm_id])
                     reward -= (dmg_delta * settings.reward_weights["hp"] * settings.reward_weights["damage_taken"])
                     if self.new_meta_data["hp_values"]["players"][pkm_id] <= 0.0 <= dmg_delta:
@@ -146,11 +153,13 @@ class PokeRogueEnv(gym.Env):
             press_button(self.driver, button)
         for button in button_combinations.SELECT_MOVE[p1_move]:
             press_button(self.driver, button)
-        for button in button_combinations.SELECT_TARGET[p1_target]:
-            press_button(self.driver, button)
+
+        if self.new_meta_data["is_double_fight"]:  # TODO: attack can only select target, if it doesn't always hit everyone e.g. land's wrath
+            for button in button_combinations.SELECT_TARGET[p1_target]:
+                press_button(self.driver, button)
 
         # Pokemon 2, if we are in a double fight and the second Pokemon is alive
-        if self.new_meta_data["is_double_fight"] and list(self.new_meta_data["hp_values"].values())[0] > 0.0:
+        if self.new_meta_data["is_double_fight"] and list(self.new_meta_data["hp_values"]["players"].values())[1] > 0.0:
             for button in ["LEFT", "UP", "SPACE"]:
                 press_button(self.driver, button)
             for button in button_combinations.SELECT_MOVE[p2_move]:
@@ -174,13 +183,16 @@ class PokeRogueEnv(gym.Env):
             # Safely try to execute the script
             raw_data = self.driver.execute_script("return window.__GLOBAL_SCENE_DATA__();")
 
+            print(raw_data)
             # If the script returned null or valid data wasn't found
             if not isinstance(raw_data, dict) or 'enemy' not in raw_data:
                 return np.zeros(82, dtype=np.float32)
+            print("Got to this checkpoint 1")
             self.new_obs, self.new_meta_data = input_creator.create_input_vector(raw_data,
                                                                                  self.pokemon_embeddings_data,
                                                                                  self.move_embeddings_data)
-
+            print("Got to this checkpoint 2")
+            print(self.new_meta_data)
             self.new_obs = np.array(self.new_obs, dtype=np.float32)
 
         except WebDriverException as e:

@@ -7,55 +7,69 @@ export function initGlobalScene(scene: BattleScene): void {
   window.globalScene = globalScene;
 
   function serializePartyPokemon(p) {
-  return {
-    formIndex: p.formIndex,
-    dex_nr: p.species?.speciesId,
-    hp: p.hp,
-    stats: p.stats,
-    id: p.id,
-    visible: p._visible,
-    moveset: p.moveset?.map(m => ({
-      id: m.moveId,
-    })),
-  };
-}
+    if (!p) return false;
+    return {
+      formIndex: p.formIndex ?? false,
+      dex_nr: p.species?.speciesId ?? false,
+      hp: p.hp ?? false,
+      stats: p.stats ?? false,
+      id: p.id ?? false,
+      visible: p._visible ?? false,
+      moveset: p.moveset
+        ? p.moveset.map(m => ({
+            id: m?.moveId ?? false,
+          }))
+        : [],
+    };
+  }
 
   function serializeEnemyPokemon(p) {
-  return {
-    formIndex: p.formIndex,
-    dex_nr: p.species?.speciesId,
-    hp: p.hp,
-    stats: p.stats,
-    id: p.id,
-  };
-}
+    if (!p) return false;
+    return {
+      formIndex: p.formIndex ?? false,
+      dex_nr: p.species?.speciesId ?? false,
+      hp: p.hp ?? false,
+      stats: p.stats ?? false,
+      id: p.id ?? false,
+    };
+  }
+
   function getPhaseData() {
-  return {
-    phaseName: scene.phaseManager.currentPhase.phaseName,
-
+    const phase = scene?.phaseManager?.currentPhase;
+    return {
+      phaseName: phase?.phaseName ?? false,
+    };
   }
+
+  function getMetaData() {
+    const battle = scene?.currentBattle;
+    return {
+      waveIndex: battle?.waveIndex ?? false,
+      isDoubleFight: battle?.double ?? false,
+    };
   }
-function getMetaData() {
-  return {
-    waveIndex: scene.currentBattle.waveIndex,
-    isDoubleFight: scene.currentBattle.double,
-  }
-}
 
+  globalThis.__GLOBAL_SCENE_DATA__ = () => {
+    const battle = scene?.currentBattle;
 
-globalThis.__GLOBAL_SCENE_DATA__ = () => ({
-  player: scene.party?.map(serializePartyPokemon),
-  enemy: scene.currentBattle.enemyParty?.map(serializeEnemyPokemon),
-  phase: getPhaseData,
-  metaData: getMetaData,
+    return {
+      player: scene?.party?.length
+        ? scene.party.map(serializePartyPokemon)
+        : [],
 
-  // only select typeoptions when phase = SelectModifierPhase
+      enemy: battle?.enemyParty?.length
+        ? battle.enemyParty.map(serializeEnemyPokemon)
+        : [],
 
-  shopitems: scene.phaseManager.getCurrentPhase.typeOptions?.map(option => ({
-    id: option.type.id,
-    tier: option.type.tier,
-  
-  }))
- });
+      phase: getPhaseData(),
 
+      metaData: getMetaData(),
+
+      shopitems:
+        scene?.phaseManager?.getCurrentPhase?.typeOptions?.map(option => ({
+          id: option?.type?.id ?? false,
+          tier: option?.type?.tier ?? false,
+        })) ?? [],
+    };
+  };
 }

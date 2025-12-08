@@ -2,7 +2,7 @@ from settings import BUTTON_KEYCODES
 import time
 
 
-def press_button(driver, button_name: str, hold_ms: int = 80):
+def press_button(driver, button_name: str, hold_ms: int = 150):
     if button_name not in BUTTON_KEYCODES:
         raise ValueError(f"Unbekannter Button: {button_name}")
 

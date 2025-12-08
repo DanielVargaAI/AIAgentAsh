@@ -36,7 +36,6 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
     :return: bool => are we terminated or is the run still ongoing
     """
     logger.debug(f"phase_handler called - Phase: {meta_data.get('phaseName', 'UNKNOWN')}, Counter: {phase_counter}, Terminated: {terminated}")
-    do_save = False
 
     if meta_data["phaseName"] == "TitlePhase":
         logger.info("Detected TitlePhase - Starting new run")

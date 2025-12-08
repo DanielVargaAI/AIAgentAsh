@@ -5,7 +5,7 @@ import json
 
 def create_input_vector(dict, pokemon_embeddings_data: dict, move_embeddings_data: dict) -> tuple:
     input_vector = []
-    meta_data = {"phase": dict["phase"]["phaseName"], "stage": dict["metaData"]["waveIndex"],
+    meta_data = {"phaseName": dict["phase"]["phaseName"], "stage": dict["metaData"]["waveIndex"],
                  "hp_values": {"enemies": {}, "players": {}}, "is_double_fight": dict["metaData"]["isDoubleFight"]}
     for pkm in dict["enemy"]:
         pkm_embedding = pkm_data.get_pokemon_embedding(pkm["dex_nr"], pkm["formIndex"], pokemon_embeddings_data)
@@ -18,7 +18,7 @@ def create_input_vector(dict, pokemon_embeddings_data: dict, move_embeddings_dat
     for pkm in dict["player"][:2]:
         pkm_embedding = pkm_data.get_pokemon_embedding(pkm["dex_nr"], pkm["formIndex"], pokemon_embeddings_data)
         current_hp = pkm["hp"] / pkm["stats"][0]
-        meta_data["hp_values"]["player"][pkm["id"]] = pkm["hp"] / pkm["stats"][0]
+        meta_data["hp_values"]["players"][pkm["id"]] = pkm["hp"] / pkm["stats"][0]
         is_visible = 1.0 if pkm["visible"] else 0.0
         stats = [value / sum(pkm["stats"]) for value in pkm["stats"]]
         moveset = []
@@ -31,6 +31,7 @@ def create_input_vector(dict, pokemon_embeddings_data: dict, move_embeddings_dat
     if len(dict["player"]) < 2:
         for _ in range(2 - len(dict["player"])):
             input_vector.extend([0.0] * 32)
+    print(dict)
     return input_vector, meta_data
 
 
