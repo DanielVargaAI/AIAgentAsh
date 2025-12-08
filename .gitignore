@@ -218,3 +218,4 @@ __marimo__/
 venv
 Screenshots
 Environment/baseline_model/tensorboard_logs
+logs

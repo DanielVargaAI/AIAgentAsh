@@ -55,6 +55,7 @@ class PokeRogueEnv(gym.Env):
         self.truncated = False
         self.driver = setup_driver()
         self.reward = 0.0  # Store reward for debugging display
+        self.all_infos = []
 
         with open("Embeddings/Pokemon/pokemon_embeddings.json", "r") as f:
             self.pokemon_embeddings_data = json.loads(f.read())
@@ -75,31 +76,26 @@ class PokeRogueEnv(gym.Env):
         self.reward = 0.0
         self.terminated = False
         self.truncated = False
-        # return self.new_obs, self._get_info()
+        self.all_infos.append([])
         return self.new_obs, {}
 
     def step(self, action):
         self._apply_action(action)
         self._get_obs()
-        time.sleep(2)
-        print(self.new_meta_data)
         self.terminated, reward_meta, reward_obs = phase_handler.phase_handler(self.new_meta_data, self.new_obs, self.driver,
                                                                                self.pokemon_embeddings_data, self.move_embeddings_data,
                                                                                reward_meta=self.new_meta_data, reward_obs=self.new_obs)
-
         self.new_meta_data = reward_meta
         self.new_obs = reward_obs
         self.reward = self._get_reward()
         self.last_obs = reward_obs
         self.last_meta_data = reward_meta
-
-        # return self.new_obs, self.reward, self.terminated, self.truncated, self._get_info()
+        self.all_infos[-1].append(self._get_info())
         return self.new_obs, self.reward, self.terminated, self.truncated, {}
 
     def _get_reward(self) -> float:
         reward = 0.0
         # hp delta
-        print(self.last_meta_data, self.new_meta_data)
         for pkm_id, hp_value in self.new_meta_data["hp_values"]["enemies"].items():
             if pkm_id in self.last_meta_data["hp_values"]["enemies"].keys():
                 reward += ((self.last_meta_data["hp_values"]["enemies"][pkm_id] -
@@ -114,7 +110,7 @@ class PokeRogueEnv(gym.Env):
                     dmg_delta = (self.last_meta_data["hp_values"]["players"][pkm_id] -
                                  self.new_meta_data["hp_values"]["players"][pkm_id])
                     reward -= (dmg_delta * settings.reward_weights["hp"] * settings.reward_weights["damage_taken"])
-                    if self.new_meta_data["hp_values"]["players"][pkm_id] <= 0.0 <= dmg_delta:
+                    if self.new_meta_data["hp_values"]["players"][pkm_id] <= 0.0 < dmg_delta:
                         reward += settings.reward_weights["member_died"]
 
         # wave progress
@@ -183,16 +179,12 @@ class PokeRogueEnv(gym.Env):
             # Safely try to execute the script
             raw_data = self.driver.execute_script("return window.__GLOBAL_SCENE_DATA__();")
 
-            print(raw_data)
             # If the script returned null or valid data wasn't found
             if not isinstance(raw_data, dict) or 'enemy' not in raw_data:
                 return np.zeros(82, dtype=np.float32)
-            print("Got to this checkpoint 1")
             self.new_obs, self.new_meta_data = input_creator.create_input_vector(raw_data,
                                                                                  self.pokemon_embeddings_data,
                                                                                  self.move_embeddings_data)
-            print("Got to this checkpoint 2")
-            print(self.new_meta_data)
             self.new_obs = np.array(self.new_obs, dtype=np.float32)
 
         except WebDriverException as e:

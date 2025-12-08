@@ -2,7 +2,7 @@ from settings import BUTTON_KEYCODES
 import time
 
 
-def press_button(driver, button_name: str, hold_ms: int = 150):
+def press_button(driver, button_name: str, hold_ms: int = 80):
     if button_name not in BUTTON_KEYCODES:
         raise ValueError(f"Unbekannter Button: {button_name}")
 
@@ -30,3 +30,5 @@ def press_button(driver, button_name: str, hold_ms: int = 150):
 
     # Up senden
     driver.execute_script(js_up)
+
+    time.sleep(0.1)

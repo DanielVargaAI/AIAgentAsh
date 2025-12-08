@@ -32,7 +32,6 @@ def create_input_vector(dict, pokemon_embeddings_data: dict, move_embeddings_dat
     if len(dict["player"]) < 2:
         for _ in range(2 - len(dict["player"])):
             input_vector.extend([0.0] * 32)
-    print(dict)
     return input_vector, meta_data
 
 

@@ -1,3 +1,4 @@
+import keyboard
 from pyautogui import press
 import logging
 
@@ -6,6 +7,7 @@ from Environment.send_key_inputs import press_button
 import DataExtraction.create_input as input_creator
 import button_combinations
 import random
+import time
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -120,8 +122,9 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
         logger.debug(f"Unhandled phase: {meta_data.get('phaseName', 'UNKNOWN')}")
         if phase_counter >= 2:
             logger.error(f"Phase {meta_data.get('phaseName', 'UNKNOWN')} repeated {phase_counter} times - possible stuck state")
-            # TODO: Call operator, cause we might be stuck in a loop/unskippable operation
-            pass
+            while True:  # Observer has to fix the state
+                if keyboard.is_pressed("p"):
+                    break
         else:
             logger.debug("Attempting generic skip with SPACE")
             press_button(driver, "SPACE")
@@ -142,7 +145,7 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
         else:
             phase_counter = 0
             logger.info(f"Phase transition: {old_phase} -> {new_phase}")
-        
+
         return phase_handler(new_meta_data, new_obs, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter, terminated, reward_meta, reward_obs)
     except Exception as e:
         logger.error(f"Error fetching new observation: {e}")
@@ -174,7 +177,11 @@ def select_item(meta_data):
     try:
         item_weights = []
         for item in meta_data["shop_items"]:
-
+            if item.id in settings.item_weights.keys():
+                item_weights.append(settings.item_weights[item.id])
+            else:
+                item_weights.append(0)
+                print(f"Unknown Item ID: {item.id}")
         if not item_weights:
             logger.warning("No item weights calculated - using default selection")
             logger.debug("Returning default item (index 0, weight 0)")
