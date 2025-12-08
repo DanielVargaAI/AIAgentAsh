@@ -1,5 +1,5 @@
 # start new endless run on save_slot 5
-NEW_SAVE = ["DOWN", "SPACE", "DOWN", "DOWN", "DOWN", "SPACE", "LEFT", "SPACE", "SPACE", "SPACE", "SPACE", "SPACE",
+NEW_SAVE = ["SPACE", "DOWN", "DOWN", "DOWN", "SPACE", "LEFT", "SPACE", "SPACE", "SPACE", "SPACE", "SPACE",
             "SPACE", "ENTER", "SPACE", "UP", "SPACE"]
 
 SELECT_MOVE = {

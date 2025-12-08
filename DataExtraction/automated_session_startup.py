@@ -21,9 +21,15 @@ def setup_driver():
     driver.execute_script(f"localStorage.setItem('settings', '{json.dumps(settings)}');")
     driver.refresh()
 
-    with open("copied_save_data.txt", "r") as f:
-        file_content = f.read()
-    driver.execute_script(f"localStorage.setItem('data_Guest', '{file_content}');")
+    # Load save data (file should be in DataExtraction folder or current working directory)
+    try:
+        with open("DataExtraction/copied_save_data.txt", "r") as f:
+            file_content = f.read()
+        driver.execute_script(f"localStorage.setItem('data_Guest', '{file_content}');")
+        print("Save data injected.")
+    except FileNotFoundError:
+        print("Warning: copied_save_data.txt not found. Starting with clean save.")
+    
     time.sleep(1)
     driver.refresh()
     time.sleep(8)

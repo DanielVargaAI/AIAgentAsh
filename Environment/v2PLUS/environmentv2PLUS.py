@@ -58,8 +58,10 @@ class PokeRogueEnv(gym.Env):
 
         with open("Embeddings/Pokemon/pokemon_embeddings.json", "r") as f:
             self.pokemon_embeddings_data = json.loads(f.read())
+            print(f"Loaded {len(self.pokemon_embeddings_data)} Pokemon embeddings.")
         with open("Embeddings/moves/move_embeddings.json", "r") as f:
             self.move_embeddings_data = json.loads(f.read())
+            print(f"Loaded {len(self.move_embeddings_data)} Move embeddings.")
 
 
         # --- 4. Launch & Inject (Startup) ---
