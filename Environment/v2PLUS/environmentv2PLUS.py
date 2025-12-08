@@ -79,12 +79,15 @@ class PokeRogueEnv(gym.Env):
     def step(self, action):
         self._apply_action(action)
         self._get_obs()
+        self.terminated, reward_meta, reward_obs = phase_handler.phase_handler(self.new_meta_data, self.new_obs, self.driver,
+                                                                               self.pokemon_embeddings_data, self.move_embeddings_data)
+
+        self.new_meta_data = reward_meta
+        self.new_obs = reward_obs
         self.reward = self._get_reward()
-        self.terminated = phase_handler.phase_handler(self.new_meta_data, self.driver, self.pokemon_embeddings_data, self.move_embeddings_data)
-        self._get_obs()
-        self.last_obs = self.new_obs
-        self.last_meta_data = self.new_meta_data
-        
+        self.last_obs = reward_obs
+        self.last_meta_data = reward_meta
+
         return self.new_obs, self.reward, self.terminated, self.truncated, self._get_info()
 
     def _get_reward(self) -> float:

@@ -24,7 +24,7 @@ if not logger.handlers:
     logger.addHandler(ch)
 
 
-def phase_handler(meta_data, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter=0, terminated=False):
+def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter=0, terminated=False, reward_meta=dict(), reward_obs=list()):
     """
     Handles the different phases that might occur during playthrough
     :param phase_counter: how often we have been in this phase in a row
@@ -36,13 +36,16 @@ def phase_handler(meta_data, driver, pokemon_embeddings_data, move_embeddings_da
     :return: bool => are we terminated or is the run still ongoing
     """
     logger.debug(f"phase_handler called - Phase: {meta_data.get('phaseName', 'UNKNOWN')}, Counter: {phase_counter}, Terminated: {terminated}")
-    
+    do_save = False
+
     if meta_data["phaseName"] == "TitlePhase":
         logger.info("Detected TitlePhase - Starting new run")
         for button_name in button_combinations.NEW_SAVE:
             logger.debug(f"Pressing button: {button_name}")
             press_button(driver, button_name)
         terminated = True
+        reward_meta = meta_data
+        reward_obs = obs
         logger.info("TitlePhase completed - Run terminated")
 
     elif meta_data["phaseName"] == "CheckSwitchPhase":
@@ -112,7 +115,7 @@ def phase_handler(meta_data, driver, pokemon_embeddings_data, move_embeddings_da
 
     elif meta_data["phaseName"] == "CommandPhase":
         logger.info("Detected CommandPhase - Player action required, returning control")
-        return terminated
+        return terminated, reward_meta, reward_obs
 
     else:
         logger.debug(f"Unhandled phase: {meta_data.get('phaseName', 'UNKNOWN')}")
@@ -130,6 +133,9 @@ def phase_handler(meta_data, driver, pokemon_embeddings_data, move_embeddings_da
         new_obs, new_meta_data = get_new_obs(driver, pokemon_embeddings_data, move_embeddings_data)
         new_phase = new_meta_data.get("phaseName", "UNKNOWN")
         old_phase = meta_data.get("phaseName", "UNKNOWN")
+        if not terminated:
+            reward_meta = new_meta_data
+            reward_obs = new_obs
         
         if new_phase == old_phase:
             phase_counter += 1
@@ -138,10 +144,10 @@ def phase_handler(meta_data, driver, pokemon_embeddings_data, move_embeddings_da
             phase_counter = 0
             logger.info(f"Phase transition: {old_phase} -> {new_phase}")
         
-        return phase_handler(new_meta_data, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter, terminated)
+        return phase_handler(new_meta_data, new_obs, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter, terminated, reward_meta, reward_obs)
     except Exception as e:
         logger.error(f"Error fetching new observation: {e}")
-        return terminated
+        return terminated, reward_meta, reward_obs
 
 
 def get_new_obs(driver, pokemon_embeddings_data, move_embeddings_data):
