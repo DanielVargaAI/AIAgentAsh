@@ -158,3 +158,37 @@ reward_weights = {
     "tenth_wave_done": 20,
 }
 
+item_weights = {
+    "id": {
+        "BASE_STAT_BOOSTER": 0,
+        "EXP_SHARE": 5,
+        "AMULET_COIN": 5,
+        "WIDE_LENS": 0,
+        "SUPER_EXP_CHARM": 5,
+        "EXP_CHARM": 5,
+        "BERRY": 0,
+        "GRIP_CLAW": 0,
+        "CANDY_JAR": 5,
+        "GOLDEN_POKEBALL": 5,
+        "ABILITY_CHARM": 5,
+        "MEGA_BRACELET": 5,
+        "ATTACK_TYPE_BOOSTER": 0,
+        "CATCHING_CHARM": 5,
+        "QUICK_CLAW": 0,
+        "SOOTHE_BELL": 0,
+        "RARE_FORM_CHANGE_ITEM": 0,
+        "DYNAMAX_BAND": 5,
+        "HEALING_CHARM": 5,
+        "LUCKY_EGG": 0,
+        "LEFTOVERS": 0,
+        "LOCK_CAPSULE": 5,
+        "SHELL_BELL": 0,
+        "FOCUS_BAND": 0,
+        "SOUL_DEW": 0,
+        "BERRY_POUCH": 5,
+        "IV_SCANNER": 5,
+        "REVIVER_SEED": 0,
+        # until 100
+        },
+    "tier": {}
+}

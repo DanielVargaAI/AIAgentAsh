@@ -6,7 +6,8 @@ import json
 def create_input_vector(dict, pokemon_embeddings_data: dict, move_embeddings_data: dict) -> tuple:
     input_vector = []
     meta_data = {"phaseName": dict["phase"]["phaseName"], "stage": dict["metaData"]["waveIndex"],
-                 "hp_values": {"enemies": {}, "players": {}}, "is_double_fight": dict["metaData"]["isDoubleFight"]}
+                 "hp_values": {"enemies": {}, "players": {}}, "is_double_fight": dict["metaData"]["isDoubleFight"],
+                 "shop_items": dict["shopItems"]}
     for pkm in dict["enemy"]:
         pkm_embedding = pkm_data.get_pokemon_embedding(pkm["dex_nr"], pkm["formIndex"], pokemon_embeddings_data)
         current_hp = pkm["hp"] / pkm["stats"][0]

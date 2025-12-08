@@ -173,6 +173,8 @@ def select_item(meta_data):
     logger.debug("select_item called with meta_data")
     try:
         item_weights = []
+        for item in meta_data["shop_items"]:
+
         if not item_weights:
             logger.warning("No item weights calculated - using default selection")
             logger.debug("Returning default item (index 0, weight 0)")
