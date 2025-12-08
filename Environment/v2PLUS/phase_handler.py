@@ -1,10 +1,27 @@
 from pyautogui import press
+import logging
 
 import settings
 from Environment.send_key_inputs import press_button
 import DataExtraction.create_input as input_creator
 import button_combinations
 import random
+
+# Configure logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# Create console handler with a higher log level
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+# Create formatter and add it to the handler
+formatter = logging.Formatter('[%(asctime)s] %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+
+# Add the handler to the logger
+if not logger.handlers:
+    logger.addHandler(ch)
 
 
 def phase_handler(meta_data, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter=0, terminated=False):
@@ -18,69 +35,125 @@ def phase_handler(meta_data, driver, pokemon_embeddings_data, move_embeddings_da
     :param move_embeddings_data: pre-loaded move data
     :return: bool => are we terminated or is the run still ongoing
     """
+    logger.debug(f"phase_handler called - Phase: {meta_data.get('phaseName', 'UNKNOWN')}, Counter: {phase_counter}, Terminated: {terminated}")
+    
     if meta_data["phaseName"] == "TitlePhase":
+        logger.info("Detected TitlePhase - Starting new run")
         for button_name in button_combinations.NEW_SAVE:
+            logger.debug(f"Pressing button: {button_name}")
             press_button(driver, button_name)
         terminated = True
+        logger.info("TitlePhase completed - Run terminated")
 
     elif meta_data["phaseName"] == "CheckSwitchPhase":
+        logger.info("Detected CheckSwitchPhase - No switch action")
+        logger.debug("Pressing DOWN and SPACE")
         press_button(driver, "DOWN")
         press_button(driver, "SPACE")
+        logger.debug("CheckSwitchPhase buttons pressed")
 
     elif meta_data["phaseName"] == "LearnMovePhase":
+        logger.info("Detected LearnMovePhase - Randomly selecting move to learn/forget")
+        logger.debug("Pressing SPACE 4 times to cycle through moves")
         for _ in range(4):  # TODO: check amount of skips
             press_button(driver, "SPACE")
         forget_move = random.randint(0, 4)
+        logger.debug(f"Randomly selected move index: {forget_move}")
         for move in range(forget_move):  # TODO: check starting position, might be the new move at the bottom
+            logger.debug(f"Pressing DOWN for move selection {move + 1}/{forget_move}")
             press_button(driver, "DOWN")
+        logger.debug("Pressing SPACE 4 times to confirm move")
         for _ in range(4):  # TODO: check amount of skips
             press_button(driver, "SPACE")
+        logger.info("LearnMovePhase completed")
 
     elif meta_data["phaseName"] == "SelectModifierPhase":
+        logger.info("Detected SelectModifierPhase - Selecting modifier/item")
         if phase_counter == 0:
             selected_item, weight = select_item(meta_data)
-            for _ in range(selected_item):
+            logger.info(f"Selected item index: {selected_item} with weight: {weight}")
+            logger.debug(f"Pressing RIGHT {selected_item} times to navigate to item")
+            for i in range(selected_item):
+                logger.debug(f"RIGHT press {i + 1}/{selected_item}")
                 press_button(driver, "RIGHT")
+            logger.debug("Pressing SPACE to confirm selection")
             press_button(driver, "SPACE")
+            logger.info("SelectModifierPhase completed")
         else:
+            logger.warning(f"SelectModifierPhase encountered {phase_counter} times - may be in loop")
             # TODO: this might occur, if we can't select an item with "simple" selection
             pass
 
     elif meta_data["phaseName"] == "SwitchPhase":
-        alive_pokemon = []
-        for hp in meta_data["hp_values"]["players"].values():
-            alive_pokemon.append(hp > 0.0)
-        if sum(alive_pokemon[2:]) >= 1:
-            new_pokemon_ind = random.randint(2, 6)
-        else:
-            new_pokemon_ind = 1
+        logger.info("Detected SwitchPhase - Switching Pokemon")
+        try:
+            alive_pokemon = []
+            for hp in meta_data["hp_values"]["players"].values():
+                alive_pokemon.append(hp > 0.0)
+            logger.debug(f"Alive Pokemon status: {alive_pokemon}")
+            if sum(alive_pokemon[2:]) >= 1:
+                new_pokemon_ind = random.randint(2, 6)
+                logger.info(f"Switching to Pokemon at index {new_pokemon_ind}")
+            else:
+                new_pokemon_ind = 1
+                logger.info(f"Switching to Pokemon at index {new_pokemon_ind} (backup Pokemon)")
+        except (KeyError, ValueError) as e:
+            logger.error(f"Error in SwitchPhase: {e}")
         # TODO: find out button presses for selecting the right pokemon
 
     elif meta_data["phaseName"] == "EggSummaryPhase":
+        logger.info("Detected EggSummaryPhase - Closing egg summary")
+        logger.debug("Pressing BACKSPACE to close")
         press_button(driver, "BACKSPACE")
+        logger.info("EggSummaryPhase completed")
 
     elif meta_data["phaseName"] == "CommandPhase":
+        logger.info("Detected CommandPhase - Player action required, returning control")
         return terminated
 
     else:
+        logger.debug(f"Unhandled phase: {meta_data.get('phaseName', 'UNKNOWN')}")
         if phase_counter >= 2:
+            logger.error(f"Phase {meta_data.get('phaseName', 'UNKNOWN')} repeated {phase_counter} times - possible stuck state")
             # TODO: Call operator, cause we might be stuck in a loop/unskippable operation
             pass
         else:
+            logger.debug("Attempting generic skip with SPACE")
             press_button(driver, "SPACE")
 
     # if the phase got resolved -> recursive call with new obs
-    new_obs, new_meta_data = get_new_obs(driver, pokemon_embeddings_data, move_embeddings_data)
-    if new_meta_data["phaseName"] == meta_data["phaseName"]:
-        phase_counter += 1
-    else:
-        phase_counter = 0
-    return phase_handler(new_meta_data, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter, terminated)
+    logger.debug("Fetching new observation after phase action")
+    try:
+        new_obs, new_meta_data = get_new_obs(driver, pokemon_embeddings_data, move_embeddings_data)
+        new_phase = new_meta_data.get("phaseName", "UNKNOWN")
+        old_phase = meta_data.get("phaseName", "UNKNOWN")
+        
+        if new_phase == old_phase:
+            phase_counter += 1
+            logger.debug(f"Same phase detected, counter incremented to {phase_counter}")
+        else:
+            phase_counter = 0
+            logger.info(f"Phase transition: {old_phase} -> {new_phase}")
+        
+        return phase_handler(new_meta_data, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter, terminated)
+    except Exception as e:
+        logger.error(f"Error fetching new observation: {e}")
+        return terminated
 
 
 def get_new_obs(driver, pokemon_embeddings_data, move_embeddings_data):
-    obs = driver.execute_script("return typeof window.__GLOBAL_SCENE_DATA__ === 'function';")
-    return input_creator.create_input_vector(obs, pokemon_embeddings_data, move_embeddings_data)
+    """Fetch new observation from the game."""
+    try:
+        logger.debug("Executing script to fetch __GLOBAL_SCENE_DATA__")
+        obs = driver.execute_script("return typeof window.__GLOBAL_SCENE_DATA__ === 'function';")
+        if not obs:
+            logger.warning("__GLOBAL_SCENE_DATA__ not found or not a function")
+        result = input_creator.create_input_vector(obs, pokemon_embeddings_data, move_embeddings_data)
+        logger.debug("Successfully created input vector from observation")
+        return result
+    except Exception as e:
+        logger.error(f"Error in get_new_obs: {e}")
+        raise
 
 
 def select_item(meta_data):
@@ -89,5 +162,18 @@ def select_item(meta_data):
     :param meta_data: contains all items
     :return: the most suitable item we can take and it's weight
     """
-    item_weights = []
-    return item_weights.index(max(item_weights)), max(item_weights)
+    logger.debug("select_item called with meta_data")
+    try:
+        item_weights = []
+        if not item_weights:
+            logger.warning("No item weights calculated - using default selection")
+            logger.debug("Returning default item (index 0, weight 0)")
+            return 0, 0
+        max_idx = item_weights.index(max(item_weights))
+        max_weight = max(item_weights)
+        logger.info(f"Selected item index: {max_idx} with weight: {max_weight}")
+        return max_idx, max_weight
+    except Exception as e:
+        logger.error(f"Error in select_item: {e}")
+        logger.debug("Returning default item due to error")
+        return 0, 0
