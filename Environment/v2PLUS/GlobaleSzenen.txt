@@ -66,7 +66,7 @@ export function initGlobalScene(scene: BattleScene): void {
       metaData: getMetaData(),
 
       shopItems:
-        scene?.phaseManager?.getCurrentPhase?.typeOptions?.map(option => ({
+        scene?.phaseManager?.currentPhase?.typeOptions?.map(option => ({
           id: option?.type?.id ?? false,
           tier: option?.type?.tier ?? false,
         })) ?? [],

@@ -65,7 +65,8 @@ class PokeRogueEnv(gym.Env):
             print(f"Loaded {len(self.move_embeddings_data)} Move embeddings.")
 
         self._get_obs()
-        phase_handler.phase_handler(self.new_meta_data, self.new_obs, self.driver, self.pokemon_embeddings_data, self.move_embeddings_data)
+        _, reward_meta, reward_obs = phase_handler.phase_handler(self.new_meta_data, self.new_obs, self.driver, self.pokemon_embeddings_data,
+                                                                 self.move_embeddings_data, self.new_meta_data, self.new_obs)
 
         self.reset()
 

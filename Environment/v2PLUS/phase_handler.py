@@ -73,7 +73,7 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
 
     elif meta_data["phaseName"] == "SelectModifierPhase":
         logger.info("Detected SelectModifierPhase - Selecting modifier/item")
-        if phase_counter == 0:
+        if phase_counter <= 10:
             selected_item, weight = select_item(meta_data)
             logger.info(f"Selected item index: {selected_item} with weight: {weight}")
             logger.debug(f"Pressing RIGHT {selected_item} times to navigate to item")
@@ -84,6 +84,9 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
             press_button(driver, "SPACE")
             logger.info("SelectModifierPhase completed")
         else:
+            while True:
+                if keyboard.is_pressed("o"):
+                    break
             logger.warning(f"SelectModifierPhase encountered {phase_counter} times - may be in loop")
             # TODO: this might occur, if we can't select an item with "simple" selection
             pass
@@ -120,8 +123,11 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
 
     else:
         logger.debug(f"Unhandled phase: {meta_data.get('phaseName', 'UNKNOWN')}")
-        if phase_counter >= 2:
+        if 2 <= phase_counter <= 4:
             logger.error(f"Phase {meta_data.get('phaseName', 'UNKNOWN')} repeated {phase_counter} times - possible stuck state")
+            time.sleep(1)
+
+        elif phase_counter >= 5:
             while True:  # Observer has to fix the state
                 if keyboard.is_pressed("p"):
                     break
@@ -156,7 +162,7 @@ def get_new_obs(driver, pokemon_embeddings_data, move_embeddings_data):
     """Fetch new observation from the game."""
     try:
         logger.debug("Executing script to fetch __GLOBAL_SCENE_DATA__")
-        obs = driver.execute_script("return typeof window.__GLOBAL_SCENE_DATA__ === 'function';")
+        obs = driver.execute_script("return window.__GLOBAL_SCENE_DATA__();")
         if not obs:
             logger.warning("__GLOBAL_SCENE_DATA__ not found or not a function")
         result = input_creator.create_input_vector(obs, pokemon_embeddings_data, move_embeddings_data)
@@ -179,6 +185,8 @@ def select_item(meta_data):
         for item in meta_data["shop_items"]:
             if item.id in settings.item_weights.keys():
                 item_weights.append(settings.item_weights[item.id])
+            elif item.id.find("BALL") >= 0:
+                item_weights.append(5)
             else:
                 item_weights.append(0)
                 print(f"Unknown Item ID: {item.id}")

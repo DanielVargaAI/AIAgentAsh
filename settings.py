@@ -192,6 +192,9 @@ item_weights = {
         "MULTI_LENS": 0,
         "KINGS_ROCK": 0,
         "SHINY_CHARM": 4,
+        "TEMP_STAT_STAGE_BOOSTER": 5,
+        "NUGGET": 5,
+        "VOUCHER": 6,
         # until 100
         },
     "tier": {}
