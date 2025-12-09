@@ -199,3 +199,15 @@ item_weights = {
         },
     "tier": {}
 }
+
+move_targets = {
+    "with_target": [10, 11],
+    """
+    10: One Target, (special) dmg
+    11: One Target, Debuff
+    """
+    "no_target": [7],
+    """
+    7 self buff
+    """
+}

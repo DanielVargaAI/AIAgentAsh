@@ -105,17 +105,14 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
     elif meta_data["phaseName"] == "SwitchPhase":
         logger.info("Detected SwitchPhase - Switching Pokemon")
         try:
-            alive_pokemon = []
-            for hp in meta_data["hp_values"]["players"].values():
-                alive_pokemon.append(hp > 0.0)
-            logger.debug(f"Alive Pokemon status: {alive_pokemon}")
-            if sum(alive_pokemon[2:]) >= 1:
-                new_pokemon_ind = random.randint(2, 6)
-                logger.info(f"Switching to Pokemon at index {new_pokemon_ind}")
-            else:
-                new_pokemon_ind = 1
-                logger.info(f"Switching to Pokemon at index {new_pokemon_ind} (backup Pokemon)")
-            for _ in range(new_pokemon_ind):
+            new_pkm_index = 1
+            if len(meta_data["hp_values"]["players"].keys() >= 2):
+                if sum(meta_data["hp_values"]["players"].values()) > 0.0:
+                    pkm_id = random.choices(meta_data["hp_values"]["players"][2:].keys(),
+                                                    weights=meta_data["hp_values"]["players"][2:], k=1)
+                    new_pkm_index = list(meta_data["hp_values"]["players"].keys()).index(pkm_id)
+            logger.debug(f"Switching to Pokemon on index {new_pkm_index}")
+            for _ in range(new_pkm_index):
                 press_button(driver, "DOWN")
             press_button(driver, "SPACE")
             press_button(driver, "SPACE")
