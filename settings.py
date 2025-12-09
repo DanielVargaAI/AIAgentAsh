@@ -195,19 +195,11 @@ item_weights = {
         "TEMP_STAT_STAGE_BOOSTER": 5,
         "NUGGET": 5,
         "VOUCHER": 6,
-        # until 100
         },
     "tier": {}
 }
 
 move_targets = {
     "with_target": [10, 11],
-    """
-    10: One Target, (special) dmg
-    11: One Target, Debuff
-    """
     "no_target": [7],
-    """
-    7 self buff
-    """
 }

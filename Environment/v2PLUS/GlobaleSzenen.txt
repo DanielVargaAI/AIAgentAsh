@@ -38,6 +38,8 @@ export function initGlobalScene(scene: BattleScene): void {
     const phase = scene?.phaseManager?.currentPhase;
     return {
       phaseName: phase?.phaseName ?? false,
+      moveId: phase?.moveId ?? false,
+      partyMemberIndex: phase?.partyMemberIndex ?? false,
     };
   }
 
