@@ -4,7 +4,7 @@ import logging
 
 import settings
 from Environment.send_key_inputs import press_button
-import DataExtraction.create_input as input_creator
+import DataExtraction.create_input_0912_learningmove as input_creator
 import button_combinations
 import random
 import time
@@ -26,17 +26,21 @@ if not logger.handlers:
     logger.addHandler(ch)
 
 
-def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter=0, terminated=False, reward_meta=dict(), reward_obs=list(), ongoing_save=True):
+def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddings_data, phase_counter=0, terminated=False, reward_meta=None, reward_obs=None, ongoing_save=True):
     """
     Handles the different phases that might occur during playthrough
-    :param phase_counter: how often we have been in this phase in a row
-    :param terminated: if we encountered a TitlePhase while handling
-    :param meta_data: current meta_data
-    :param driver: the selenium driver
-    :param pokemon_embeddings_data: pre-loaded pokemon data
-    :param move_embeddings_data: pre-loaded move data
-    :return: bool => are we terminated or is the run still ongoing
     """
+    # Initialize mutable defaults properly
+    if reward_meta is None:
+        reward_meta = {}
+    if reward_obs is None:
+        reward_obs = []
+    
+    # Safety check: ensure meta_data has phaseName
+    if not meta_data or "phaseName" not in meta_data:
+        logger.debug("phase_handler called with invalid meta_data, returning early")
+        return terminated, reward_meta, reward_obs
+    
     logger.debug(f"phase_handler called - Phase: {meta_data.get('phaseName', 'UNKNOWN')}, Counter: {phase_counter}, Terminated: {terminated}")
 
     print(meta_data["phaseName"])
@@ -63,20 +67,42 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
         press_button(driver, "SPACE")
         logger.debug("CheckSwitchPhase buttons pressed")
 
-    elif meta_data["phaseName"] == "LearnMovePhase": # Implement special case if pokemon doesnt know 4 moves, we dont need to forget one
+    # --- NEW HANDLER FOR SWITCHSUMMONPHASE ---
+    elif meta_data["phaseName"] == "SwitchSummonPhase":
+        logger.info("Detected SwitchSummonPhase - Declining Switch")
+        # Press DOWN to select "No" (declining switch), then SPACE to confirm
+        press_button(driver, "DOWN")
+        press_button(driver, "SPACE")
+        logger.debug("SwitchSummonPhase declined")
+    # -----------------------------------------
+
+    elif meta_data["phaseName"] == "LearnMovePhase":
+        logger.info("Detected LearnMovePhase - Learning new move")
         
-        logger.info("Detected LearnMovePhase - Randomly selecting move to learn/forget")
-        logger.debug("Pressing SPACE 4 times to cycle through moves")
-        for _ in range(4):
+        learning_pokemon = meta_data.get("learning_pokemon")
+        current_moves = meta_data.get("current_moves_count", 4)
+        
+        if learning_pokemon:
+            logger.info(f"Pokemon {learning_pokemon.get('dex_nr')} is learning a move (currently knows {current_moves} moves)")
+        
+        if current_moves < 4:
+            logger.debug("Pokemon knows < 4 moves, accepting new move without forgetting")
             press_button(driver, "SPACE")
-        forget_move = random.randint(0, 4)
-        logger.debug(f"Randomly selected move index: {forget_move}")
-        for move in range(forget_move):
-            logger.debug(f"Pressing DOWN for move selection {move + 1}/{forget_move}")
-            press_button(driver, "UP")
-        logger.debug("Pressing SPACE 4 times to confirm move")
-        for _ in range(5):
+        else:
+            logger.debug("Pokemon knows 4 moves, randomly selecting move to forget")
+            for _ in range(4):
+                press_button(driver, "SPACE")
+            
+            forget_move = random.randint(0, 4)
+            logger.debug(f"Selected move slot {forget_move} to replace")
+            
+            for move in range(forget_move):
+                logger.debug(f"Pressing DOWN for move selection {move + 1}/{forget_move}")
+                press_button(driver, "DOWN")
+            
+            logger.debug("Pressing SPACE to confirm move replacement")
             press_button(driver, "SPACE")
+        
         logger.info("LearnMovePhase completed")
 
     elif meta_data["phaseName"] == "SelectModifierPhase":
@@ -100,28 +126,34 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
                 if keyboard.is_pressed("o"):
                     break
             logger.warning(f"SelectModifierPhase encountered {phase_counter} times - may be in loop")
-            # TODO: this might occur, if we can't select an item with "simple" selection
             pass
 
     elif meta_data["phaseName"] == "SwitchPhase":
         logger.info("Detected SwitchPhase - Switching Pokemon")
         try:
+            # Re-collect alive status from the now-complete hp_values list
             alive_pokemon = []
             for hp in meta_data["hp_values"]["players"].values():
                 alive_pokemon.append(hp > 0.0)
+            
             logger.debug(f"Alive Pokemon status: {alive_pokemon}")
-            if sum(alive_pokemon[2:]) >= 1:
-                new_pokemon_ind = random.randint(2, 6)
+            
+            # Safe logic: check if we actually have reserves
+            if len(alive_pokemon) > 2 and sum(alive_pokemon[2:]) >= 1:
+                # Random reserve index (2 to length-1)
+                new_pokemon_ind = random.randint(2, len(alive_pokemon) - 1)
                 logger.info(f"Switching to Pokemon at index {new_pokemon_ind}")
             else:
                 new_pokemon_ind = 1
-                logger.info(f"Switching to Pokemon at index {new_pokemon_ind} (backup Pokemon)")
+                logger.info(f"Switching to Pokemon at index {new_pokemon_ind} (backup)")
+            
             for _ in range(new_pokemon_ind):
                 press_button(driver, "DOWN")
             press_button(driver, "SPACE")
             press_button(driver, "SPACE")
         except (KeyError, ValueError) as e:
             logger.error(f"Error in SwitchPhase: {e}")
+            press_button(driver, "SPACE") # Fallback to avoid sticking
 
     elif meta_data["phaseName"] == "EggSummaryPhase":
         logger.info("Detected EggSummaryPhase - Closing egg summary")
@@ -135,19 +167,19 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
 
     else:
         logger.debug(f"Unhandled phase: {meta_data.get('phaseName', 'UNKNOWN')}")
-        if 2 <= phase_counter <= 4:
+        if 3 <= phase_counter <= 4:
             logger.error(f"Phase {meta_data.get('phaseName', 'UNKNOWN')} repeated {phase_counter} times - possible stuck state")
             time.sleep(1)
+            #press_button(driver, "SPACE")
 
-        elif phase_counter >= 5:
-            while True:  # Observer has to fix the state
-                if keyboard.is_pressed("p"):
-                    break
+        elif phase_counter >= 8:
+            logger.warning(f"Phase {meta_data.get('phaseName', 'UNKNOWN')} stuck for 5+ iterations, aborting")
+            return terminated, reward_meta, reward_obs
         else:
             logger.debug("Attempting generic skip with SPACE")
             press_button(driver, "SPACE")
 
-    # if the phase got resolved -> recursive call with new obs
+    # Recursive call for next state
     logger.debug("Fetching new observation after phase action")
     try:
         new_obs, new_meta_data = get_new_obs(driver, pokemon_embeddings_data, move_embeddings_data)
@@ -159,6 +191,7 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
         
         if new_phase == old_phase:
             phase_counter += 1
+            time.sleep(0.5)  # Small delay to avoid rapid looping
             logger.debug(f"Same phase detected, counter incremented to {phase_counter}")
         else:
             phase_counter = 0
@@ -187,9 +220,7 @@ def get_new_obs(driver, pokemon_embeddings_data, move_embeddings_data):
 
 def select_item(meta_data):
     """
-    Select the most suitable item from the shop (e.g. no applying on a Pokemon)
-    :param meta_data: contains all items
-    :return: the most suitable item we can take and it's weight
+    Select the most suitable item from the shop
     """
     logger.debug("select_item called with meta_data")
     try:
