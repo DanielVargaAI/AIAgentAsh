@@ -7,16 +7,18 @@ def create_input_vector(dict, pokemon_embeddings_data: dict, move_embeddings_dat
     input_vector = []
     meta_data = {"phaseName": dict["phase"]["phaseName"], "stage": dict["metaData"]["waveIndex"],
                  "hp_values": {"enemies": {}, "players": {}}, "is_double_fight": dict["metaData"]["isDoubleFight"],
-                 "shop_items": dict["shopItems"]}
+                 "shop_items": dict["shopItems"], "learn_move_phase": {"move_id": dict["phase"]["moveId"],
+                                                                       "member_move_count": len(dict["player"][dict["phase"]["partyMemberIndex"]]["moveset"])
+                                                                       if dict["phase"]["partyMemberIndex"] else False}}
     for pkm in dict["enemy"]:
         pkm_embedding = pkm_data.get_pokemon_embedding(pkm["dex_nr"], pkm["formIndex"], pokemon_embeddings_data)
         current_hp = pkm["hp"] / pkm["stats"][0]
         meta_data["hp_values"]["enemies"][pkm["id"]] = pkm["hp"] / pkm["stats"][0]
         input_vector.extend(pkm_embedding + [current_hp])
-    if len(dict["enemy"]) < 2:
+    if len(dict["enemy"]) <= 2:
         for _ in range(2 - len(dict["enemy"])):
             input_vector.extend([0.0] * 9)
-    for pkm in dict["player"][:2]:
+    for pkm in dict["player"]:
         pkm_embedding = pkm_data.get_pokemon_embedding(pkm["dex_nr"], pkm["formIndex"], pokemon_embeddings_data)
         current_hp = pkm["hp"] / pkm["stats"][0]
         meta_data["hp_values"]["players"][pkm["id"]] = pkm["hp"] / pkm["stats"][0]
@@ -29,8 +31,8 @@ def create_input_vector(dict, pokemon_embeddings_data: dict, move_embeddings_dat
             else:
                 moveset.extend([0.0] * 4)
         input_vector.extend(pkm_embedding + [current_hp] + stats + moveset + [is_visible])
-    if len(dict["player"]) < 2:
-        for _ in range(2 - len(dict["player"])):
+    if len(dict["player"]) < 6:
+        for _ in range(6 - len(dict["player"])):
             input_vector.extend([0.0] * 32)
     return input_vector, meta_data
 

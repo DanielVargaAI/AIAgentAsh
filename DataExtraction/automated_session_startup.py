@@ -32,12 +32,12 @@ def setup_driver():
     
     time.sleep(1)
     driver.refresh()
-    time.sleep(8)
 
     from selenium.webdriver.support.ui import WebDriverWait
     WebDriverWait(driver, timeout=10).until(
         lambda d: d.execute_script("return typeof window.__GLOBAL_SCENE_DATA__ === 'function';")
     )
+    time.sleep(2)
     return driver
 
 

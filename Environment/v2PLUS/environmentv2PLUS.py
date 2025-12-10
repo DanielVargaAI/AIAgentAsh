@@ -45,8 +45,8 @@ class PokeRogueEnv(gym.Env):
         # [P1 Move (0-3), P1 Target (0-1), P2 Move (0-3), P2 Target (0-1)]
         self.action_space = spaces.MultiDiscrete([4, 2, 4, 2])
         # --- 2. Define Observation Space ---
-        # Size 82 floats as calculated
-        self.observation_space = spaces.Box(low=-100, high=100, shape=(82,), dtype=np.float32)
+        # Size 210 floats as calculated
+        self.observation_space = spaces.Box(low=-100, high=100, shape=(210,), dtype=np.float32)
         self.last_obs = []
         self.new_obs = []
         self.last_meta_data = dict()
@@ -66,7 +66,8 @@ class PokeRogueEnv(gym.Env):
 
         self._get_obs()
         _, reward_meta, reward_obs = phase_handler.phase_handler(self.new_meta_data, self.new_obs, self.driver, self.pokemon_embeddings_data,
-                                                                 self.move_embeddings_data, self.new_meta_data, self.new_obs, ongoing_save=False)
+                                                                 self.move_embeddings_data, phase_counter=0, reward_meta=self.new_meta_data,
+                                                                 reward_obs=self.new_obs, ongoing_save=False)
 
         self.reset()
 
@@ -182,7 +183,7 @@ class PokeRogueEnv(gym.Env):
 
             # If the script returned null or valid data wasn't found
             if not isinstance(raw_data, dict) or 'enemy' not in raw_data:
-                return np.zeros(82, dtype=np.float32)
+                return np.zeros(210, dtype=np.float32)
             self.new_obs, self.new_meta_data = input_creator.create_input_vector(raw_data,
                                                                                  self.pokemon_embeddings_data,
                                                                                  self.move_embeddings_data)
@@ -190,11 +191,11 @@ class PokeRogueEnv(gym.Env):
 
         except WebDriverException as e:
             # Catch "scene.currentBattle is null" errors silently
-            self.new_obs = np.zeros(82, dtype=np.float32)
+            self.new_obs = np.zeros(210, dtype=np.float32)
 
         except Exception as e:
             # Catch other Python errors
             print(f" Warning in _get_obs: {e}")
-            self.new_obs = np.zeros(82, dtype=np.float32)
+            self.new_obs = np.zeros(210, dtype=np.float32)
 
         return self.new_obs

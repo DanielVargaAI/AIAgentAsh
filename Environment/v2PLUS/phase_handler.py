@@ -8,6 +8,7 @@ import DataExtraction.create_input as input_creator
 import button_combinations
 import random
 import time
+import json
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -39,8 +40,6 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
     """
     logger.debug(f"phase_handler called - Phase: {meta_data.get('phaseName', 'UNKNOWN')}, Counter: {phase_counter}, Terminated: {terminated}")
 
-    print(meta_data["phaseName"])
-
     if meta_data["phaseName"] == "TitlePhase":
         logger.info("Detected TitlePhase - Starting new run")
         if ongoing_save:
@@ -61,21 +60,30 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
         logger.debug("Pressing DOWN and SPACE")
         press_button(driver, "DOWN")
         press_button(driver, "SPACE")
+        if meta_data["is_double_fight"]:
+            press_button(driver, "DOWN")
+            press_button(driver, "SPACE")
         logger.debug("CheckSwitchPhase buttons pressed")
 
-    elif meta_data["phaseName"] == "LearnMovePhase": # Implement special case if pokemon doesnt know 4 moves, we dont need to forget one
-        
+    elif meta_data["phaseName"] == "LearnMovePhase":  # Implement special case if pokemon doesnt know 4 moves, we dont need to forget one
         logger.info("Detected LearnMovePhase - Randomly selecting move to learn/forget")
         logger.debug("Pressing SPACE 4 times to cycle through moves")
-        for _ in range(4):
-            press_button(driver, "SPACE")
-        forget_move = random.randint(0, 4)
-        logger.debug(f"Randomly selected move index: {forget_move}")
-        for move in range(forget_move):
-            logger.debug(f"Pressing DOWN for move selection {move + 1}/{forget_move}")
-            press_button(driver, "UP")
-        logger.debug("Pressing SPACE 4 times to confirm move")
-        for _ in range(5):
+        if meta_data["learn_move_phase"]["member_move_count"] <= 3:
+            for _ in range(4):
+                press_button(driver, "SPACE")
+            forget_move = random.randint(0, 4)
+            logger.debug(f"Randomly selected move index: {forget_move}")
+            for move in range(forget_move):
+                logger.debug(f"Pressing DOWN for move selection {move + 1}/{forget_move}")
+                press_button(driver, "UP")
+            logger.debug("Pressing SPACE 4 times to confirm move")
+            if forget_move == 0:
+                press_range = 3
+            else:
+                press_range = 5
+            for _ in range(press_range):
+                press_button(driver, "SPACE")
+        else:
             press_button(driver, "SPACE")
         logger.info("LearnMovePhase completed")
 
@@ -83,7 +91,7 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
         logger.info("Detected SelectModifierPhase - Selecting modifier/item")
         if phase_counter <= 10:
             selected_item, weight = select_item(meta_data)
-            if weight == 0:
+            if weight <= 4:
                 press_button(driver, "DOWN")
                 press_button(driver, "SPACE")
             else:
@@ -106,17 +114,14 @@ def phase_handler(meta_data, obs, driver, pokemon_embeddings_data, move_embeddin
     elif meta_data["phaseName"] == "SwitchPhase":
         logger.info("Detected SwitchPhase - Switching Pokemon")
         try:
-            alive_pokemon = []
-            for hp in meta_data["hp_values"]["players"].values():
-                alive_pokemon.append(hp > 0.0)
-            logger.debug(f"Alive Pokemon status: {alive_pokemon}")
-            if sum(alive_pokemon[2:]) >= 1:
-                new_pokemon_ind = random.randint(2, 6)
-                logger.info(f"Switching to Pokemon at index {new_pokemon_ind}")
-            else:
-                new_pokemon_ind = 1
-                logger.info(f"Switching to Pokemon at index {new_pokemon_ind} (backup Pokemon)")
-            for _ in range(new_pokemon_ind):
+            new_pkm_index = 1
+            if len(meta_data["hp_values"]["players"].keys()) > 2:
+                if sum(meta_data["hp_values"]["players"].values()[2:]) > 0.0:
+                    pkm_id = random.choices(list(meta_data["hp_values"]["players"].keys())[2:],
+                                            weights=list(meta_data["hp_values"]["players"].values())[2:], k=1)
+                    new_pkm_index = list(meta_data["hp_values"]["players"].keys()).index(pkm_id[0])
+            logger.debug(f"Switching to Pokemon on index {new_pkm_index}")
+            for _ in range(new_pkm_index):
                 press_button(driver, "DOWN")
             press_button(driver, "SPACE")
             press_button(driver, "SPACE")
@@ -202,6 +207,11 @@ def select_item(meta_data):
             else:
                 item_weights.append(0)
                 print(f"Unknown Item ID: {item['id']}")
+                with open("unknown_item_names.json", "w") as f:
+                    unknown_items = json.load(f)
+                    if item["id"] not in unknown_items.keys():
+                        unknown_items[item["id"]] = item["tier"]
+                        f.write(json.dumps(unknown_items))
         if not item_weights:
             logger.warning("No item weights calculated - using default selection")
             logger.debug("Returning default item (index 0, weight 0)")
