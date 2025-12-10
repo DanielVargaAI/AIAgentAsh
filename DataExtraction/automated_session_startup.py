@@ -3,7 +3,7 @@ from selenium.webdriver.firefox.options import Options
 import keyboard
 import json
 import time
-from Environment.send_key_inputs import press_button
+ #from Environment.send_key_inputs import press_button
 
 
 def setup_driver():
@@ -48,7 +48,7 @@ if __name__ == "__main__":
             print(driver.execute_script("return window.__GLOBAL_SCENE_DATA__();"))
             break
         if keyboard.is_pressed('q'):
-            press_button(driver, "SPACE")
+            #press_button(driver, "SPACE")
             break
 
     print(driver.execute_script("return globalScene.phaseManager"))
