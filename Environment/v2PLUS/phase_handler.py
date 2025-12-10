@@ -8,6 +8,7 @@ import DataExtraction.create_input as input_creator
 import button_combinations
 import random
 import time
+import json
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -206,6 +207,11 @@ def select_item(meta_data):
             else:
                 item_weights.append(0)
                 print(f"Unknown Item ID: {item['id']}")
+                with open("unknown_item_names.json", "w") as f:
+                    unknown_items = json.load(f)
+                    if item["id"] not in unknown_items.keys():
+                        unknown_items[item["id"]] = item["tier"]
+                        f.write(json.dumps(unknown_items))
         if not item_weights:
             logger.warning("No item weights calculated - using default selection")
             logger.debug("Returning default item (index 0, weight 0)")

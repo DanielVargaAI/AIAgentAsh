@@ -199,7 +199,21 @@ item_weights = {
     "tier": {}
 }
 
-move_targets = {
-    "with_target": [10, 11],
-    "no_target": [7],
+move_targets = {  # TODO
+    1: {"name": "specific-move", "single_select": False, "double_select": True},  # select
+    2: {"name": "selected-pokemon-me-first"},  # select
+    3: {"name": "ally"},  # select if we can select team, else skip
+    4: {"name": "users-field"},  # skip
+    5: {"name": "user-or-ally"},  # select
+    6: {"name": "opponents-field"},  # skip
+    7: {"name": "user"},  # skip
+    8: {"name": "random-opponent"},  # skip
+    9: {"name": "all-other-pokemon"},  # skip
+    10: {"name": "selected-pokemon"},  # select
+    11: {"name": "all-opponents"},  # skip
+    12: {"name": "entire-field"},  # skip
+    13: {"name": "user-and-allies"},  # skip
+    14: {"name": "all-pokemon"},  # skip
+    15: {"name": "all-allies"},  # skip
+    16: {"name": "fainting-pokemon"}  # select a fainted pokemon (only player party afaik)
 }
